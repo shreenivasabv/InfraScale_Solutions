@@ -1,0 +1,40 @@
+.hero {
+  padding: 100px 50px;
+  text-align: center;
+  background: linear-gradient(135deg, #0b1120, #111827);
+  color: white;
+}
+
+.hero h1 {
+  font-size: 38px;
+  margin-bottom: 20px;
+}
+
+.hero p {
+  max-width: 800px;
+  margin: 0 auto 30px;
+  line-height: 1.6;
+  color: #cbd5e1;
+}
+
+.hero-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.primary-btn {
+  padding: 12px 25px;
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.secondary-btn {
+  padding: 12px 25px;
+  background: transparent;
+  color: white;
+  border: 1px solid white;
+  cursor: pointer;
+}

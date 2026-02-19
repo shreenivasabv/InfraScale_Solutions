@@ -5,7 +5,6 @@ import "./Navbar.css";
 function Navbar() {
   const [openMenu, setOpenMenu] = useState(null);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
-  const [showAdmin, setShowAdmin] = useState(false);
 
   const handleMouseEnter = (menu) => setOpenMenu(menu);
   const handleMouseLeave = () => setOpenMenu(null);
@@ -16,9 +15,10 @@ function Navbar() {
         <Link to="/">INFRASCALE</Link>
       </div>
 
-      {/* 1. Links now come second */}
       <ul className={`nav-links ${showMobileMenu ? "active" : ""}`}>
-        <li><Link to="/" onClick={() => setShowMobileMenu(false)}>Home</Link></li>
+        <li>
+          <Link to="/" onClick={() => setShowMobileMenu(false)}>Home</Link>
+        </li>
 
         <li 
           className="dropdown" 
@@ -42,30 +42,44 @@ function Navbar() {
           <span>Our Solutions ▾</span>
           {openMenu === "solutions" && (
             <ul className="dropdown-menu">
-              <li><Link to="/services/virtualization">Virtualization</Link></li>
-              <li><Link to="/services/storage-backup">Storage & Backup</Link></li>
-              <li><Link to="/services/devops">DevOps</Link></li>
+              {/* IMPORTANT: These 'to' paths should match the 
+                  'category' strings you save in your database.
+              */}
+              <li>
+                <Link to="/services/Virtualization" onClick={() => setShowMobileMenu(false)}>
+                  Virtualization
+                </Link>
+              </li>
+              <li>
+                <Link to="/services/StorageBackup" onClick={() => setShowMobileMenu(false)}>
+                  Storage & Backup
+                </Link>
+              </li>
+              <li>
+                <Link to="/services/DevOps" onClick={() => setShowMobileMenu(false)}>
+                  DevOps
+                </Link>
+              </li>
             </ul>
           )}
         </li>
 
-        <li>   <a href="#contact">Contact Us</a></li>
-
+        <li><a href="#contact">Contact Us</a></li>
       </ul>
-<div 
-  className="three-dot-container" 
-  onMouseEnter={() => handleMouseEnter("admin")} 
-  onMouseLeave={handleMouseLeave}
->
-  <div className="three-dot">⋮</div>
-  
-  {openMenu === "admin" && (
-    <div className="admin-dropdown">
-      <Link to="/admin-login">Admin Login</Link>
-    </div>
-  )}
-</div>
-      
+
+      <div 
+        className="three-dot-container" 
+        onMouseEnter={() => handleMouseEnter("admin")} 
+        onMouseLeave={handleMouseLeave}
+      >
+        <div className="three-dot">⋮</div>
+        
+        {openMenu === "admin" && (
+          <div className="admin-dropdown">
+            <Link to="/admin-login">Admin Login</Link>
+          </div>
+        )}
+      </div>
     </nav>
   );
 }

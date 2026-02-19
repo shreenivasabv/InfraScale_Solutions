@@ -52,6 +52,7 @@ async function createDefaultAdmin() {
 createDefaultAdmin();
 
 // --- ROUTES ---
+app.use("/api/services", require( "./routes/serviceRoutes"));
 app.use("/api/contact", require("./routes/contactRoutes"));
 app.use("/api/admin", require("./routes/adminRoutes"));
 app.use("/api/team", require("./routes/teamRoutes"));

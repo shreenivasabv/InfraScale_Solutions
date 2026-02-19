@@ -2,7 +2,7 @@
 
 .admin-services-container {
   padding: 20px;
-  max-width: 800px; /* Centers the form and makes it easier to read */
+  max-width: 800px; 
 }
 
 .admin-services-container h2 {
@@ -19,14 +19,14 @@
   border-radius: 10px;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
   display: flex;
-  flex-direction: column; /* This makes labels/inputs come one by one */
+  flex-direction: column; 
   gap: 20px;
   border: 1px solid #f1f5f9;
 }
 
 .form-group {
   display: flex;
-  flex-direction: column; /* Stacks label above input */
+  flex-direction: column; 
   gap: 8px;
 }
 
@@ -36,14 +36,17 @@
   font-size: 0.95rem;
 }
 
+/* Added 'select' here so it shares the same style as input and textarea */
 .form-group input, 
-.form-group textarea {
+.form-group textarea,
+.form-group select {
   padding: 12px;
   border: 1px solid #cbd5e1;
   border-radius: 6px;
   font-size: 1rem;
   outline: none;
   transition: border-color 0.2s;
+  background-color: #fff; /* Ensures white background for the dropdown */
 }
 
 .form-group textarea {
@@ -51,8 +54,10 @@
   resize: vertical;
 }
 
+/* Added focus state for select */
 .form-group input:focus, 
-.form-group textarea:focus {
+.form-group textarea:focus,
+.form-group select:focus {
   border-color: #2563eb;
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }

@@ -1,4 +1,3 @@
-import Navbar from "../components/Navbar/Navbar";
 import Hero from "../components/Hero/Hero";
 import Difference from "../components/Difference/Difference";
 import Domains from "../components/Domains/Domains";
@@ -13,7 +12,6 @@ function Home() {
   return (
     <>
       <Toaster />
-      <Navbar />
       <Hero />
       <Difference />
       <Domains />

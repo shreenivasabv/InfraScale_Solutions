@@ -3,25 +3,29 @@ import axios from "axios";
 import "./MemberDashboard.css";
 
 const API = "http://localhost:5000/api/member-profile";
-const TEAM_API = "http://localhost:5000/api/team";
 
 function MemberDashboard() {
-
   const [member, setMember] = useState(null);
-  const [teamInfo, setTeamInfo] = useState(null);
   const [activeTab, setActiveTab] = useState("general");
   const [loading, setLoading] = useState(true);
 
-  const token = localStorage.getItem("token");
-
-  // 🔹 FETCH MEMBER PROFILE (skills, projects, etc)
-  const fetchProfile = async () => {
+  // 🔹 FETCH PROFILE (JWT BASED)
+  const fetchProfileData = async () => {
     try {
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        console.error("No token found. Please login.");
+        setLoading(false);
+        return;
+      }
+
       const res = await axios.get(`${API}/me`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
       });
+      console.log("PROFILE DATA FROM BACKEND:", res.data); 
 
       setMember({
         ...res.data,
@@ -31,54 +35,21 @@ function MemberDashboard() {
       });
 
     } catch (error) {
-      console.error(
-        "Failed to fetch profile:",
-        error.response?.data || error.message
-      );
-    }
-  };
-
-  // 🔹 FETCH TEAM INFO (name, image, designation)
-  const fetchTeamProfile = async () => {
-    try {
-      const res = await axios.get(`${TEAM_API}/me`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-
-      setTeamInfo(res.data);
-
-    } catch (error) {
-      console.error(
-        "Failed to fetch team info:",
-        error.response?.data || error.message
-      );
-    }
-  };
-
-  // 🔹 INITIAL LOAD
-  useEffect(() => {
-    const loadData = async () => {
-      if (!token) {
-        setLoading(false);
-        return;
-      }
-
-      await Promise.all([
-        fetchProfile(),
-        fetchTeamProfile()
-      ]);
-
+      console.error("Failed to fetch profile:", error.response?.data || error.message);
+    } finally {
       setLoading(false);
-    };
+    }
+  };
 
-    loadData();
-  }, [token]);
+  useEffect(() => {
+    fetchProfileData();
+  }, []);
 
-  // 🔹 UPDATE MEMBER PROFILE
+  // 🔹 UPDATE PROFILE
   const handleUpdate = async () => {
     try {
+      const token = localStorage.getItem("token");
+
       await axios.put(`${API}/me`, member, {
         headers: {
           Authorization: `Bearer ${token}`
@@ -88,37 +59,37 @@ function MemberDashboard() {
       alert("Profile Updated Successfully 🚀");
 
     } catch (error) {
-      console.error(
-        "Update error:",
-        error.response?.data || error.message
-      );
+      console.error("Update error:", error.response?.data || error.message);
       alert("Update failed");
     }
   };
+  
 
   if (loading) return <p>Loading profile...</p>;
-  if (!member) return <p>Profile not found</p>;
-
+  if (!member) return <p>Profile not found. Please log in again.</p>;
 
   return (
     <div className="dashboard-wrapper">
-
       {/* HEADER */}
       <div className="profile-header">
         <div className="profile-left">
           <img
-            src={member.image || "/default.png"}
-            alt="profile"
-            className="profile-image"
-          />
-
+  src={
+    member.imagePreview
+      ? member.imagePreview
+      : member.image && member.image !== ""
+      ? `http://localhost:5000${member.image}`
+      : "/default-profile.png"   // 👈 fallback image
+  }
+  alt="profile"
+  className="profile-image"
+/>
           <div>
             <h2>{member.name || "Your Name"}</h2>
             <p>{member.designation}</p>
             <span>{member.department}</span>
           </div>
         </div>
-
         <button className="save-btn" onClick={handleUpdate}>
           Save Changes
         </button>
@@ -149,7 +120,6 @@ function MemberDashboard() {
                 setMember({ ...member, name: e.target.value })
               }
             />
-
             <input
               placeholder="Designation"
               value={member.designation || ""}
@@ -157,7 +127,6 @@ function MemberDashboard() {
                 setMember({ ...member, designation: e.target.value })
               }
             />
-
             <input
               placeholder="Department"
               value={member.department || ""}
@@ -165,7 +134,6 @@ function MemberDashboard() {
                 setMember({ ...member, department: e.target.value })
               }
             />
-
             <input
               placeholder="Specialization"
               value={member.specialization || ""}
@@ -173,13 +141,15 @@ function MemberDashboard() {
                 setMember({ ...member, specialization: e.target.value })
               }
             />
-
             <input
               type="number"
               placeholder="Experience Years"
               value={member.experienceYears || 0}
               onChange={(e) =>
-                setMember({ ...member, experienceYears: e.target.value })
+                setMember({
+                  ...member,
+                  experienceYears: Number(e.target.value)
+                })
               }
             />
           </div>
@@ -194,7 +164,10 @@ function MemberDashboard() {
             onChange={(e) =>
               setMember({
                 ...member,
-                skills: e.target.value.split(",").map(s => s.trim())
+                skills: e.target.value
+                  .split(",")
+                  .map(s => s.trim())
+                  .filter(Boolean)
               })
             }
           />
@@ -214,10 +187,9 @@ function MemberDashboard() {
                     setMember({ ...member, projects: updated });
                   }}
                 />
-
                 <input
                   placeholder="Technologies"
-                  value={proj.technologies?.join(", ") || ""}
+                  value={(proj.technologies || []).join(", ")}
                   onChange={(e) => {
                     const updated = [...member.projects];
                     updated[index].technologies =
@@ -258,7 +230,6 @@ function MemberDashboard() {
                     setMember({ ...member, workExperience: updated });
                   }}
                 />
-
                 <input
                   placeholder="Designation"
                   value={exp.designation || ""}
@@ -268,7 +239,6 @@ function MemberDashboard() {
                     setMember({ ...member, workExperience: updated });
                   }}
                 />
-
                 <input
                   placeholder="Duration"
                   value={exp.duration || ""}

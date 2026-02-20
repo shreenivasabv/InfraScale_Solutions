@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import "./MemberDashboard.css";
+import toast from "react-hot-toast";
 
 const API_BASE = import.meta.env.VITE_API_URL;
-
-
-const API = `${API_BASE}/api/members`;
 
 function MemberDashboard() {
   const [member, setMember] = useState(null);
@@ -18,27 +16,38 @@ function MemberDashboard() {
       const token = localStorage.getItem("token");
 
       if (!token) {
-        console.error("No token found. Please login.");
+        toast.error("No token found. Please login.");
         setLoading(false);
         return;
       }
 
-      const res = await axios.get(`${API}/me`, {
+      // First, get member auth to find teamMemberId
+      const authRes = await axios.get(`${API_BASE}/api/members/me`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
       });
-      console.log("PROFILE DATA FROM BACKEND:", res.data); 
+      
+      console.log("MEMBER AUTH DATA:", authRes.data);
 
-      setMember({
-        ...res.data,
-        skills: res.data.skills || [],
-        projects: res.data.projects || [],
-        workExperience: res.data.workExperience || []
-      });
+      // If member has teamMemberId, fetch team member details
+      if (authRes.data.teamMemberId) {
+        const teamRes = await axios.get(`${API_BASE}/api/team/${authRes.data.teamMemberId}`);
+        console.log("TEAM MEMBER DATA:", teamRes.data);
+        
+        setMember({
+          ...teamRes.data,
+          authId: authRes.data._id,
+          email: authRes.data.email,
+          _id: authRes.data.teamMemberId
+        });
+      } else {
+        setMember(authRes.data);
+      }
 
     } catch (error) {
       console.error("Failed to fetch profile:", error.response?.data || error.message);
+      toast.error("Failed to load profile");
     } finally {
       setLoading(false);
     }
@@ -53,17 +62,27 @@ function MemberDashboard() {
     try {
       const token = localStorage.getItem("token");
 
-      await axios.put(`${API}/me`, member, {
+      const updateData = {
+        skills: member.skills || [],
+        projects: member.projects || [],
+        workExperience: member.workExperience || [],
+        designation: member.designation,
+        name: member.name,
+        specialization: member.specialization,
+        experience: member.experience
+      };
+
+      await axios.put(`${API_BASE}/api/members/me`, updateData, {
         headers: {
           Authorization: `Bearer ${token}`
         }
       });
 
-      alert("Profile Updated Successfully 🚀");
+      toast.success("Profile Updated Successfully 🚀");
 
     } catch (error) {
       console.error("Update error:", error.response?.data || error.message);
-      alert("Update failed");
+      toast.error("Update failed");
     }
   };
   
@@ -77,20 +96,21 @@ function MemberDashboard() {
       <div className="profile-header">
         <div className="profile-left">
           <img
-  src={
-    member.imagePreview
-      ? member.imagePreview
-      : member.image && member.image !== ""
-      ? `${API_BASE}${member.image}`
-      : "/default-profile.png"   // 👈 fallback image
-  }
-  alt="profile"
-  className="profile-image"
-/>
+            src={
+              member.image
+                ? `${API_BASE}/uploads/${member.image}`
+                : "/default-profile.png"
+            }
+            alt="profile"
+            className="profile-image"
+            onError={(e) => {
+              e.target.src = "/default-profile.png";
+            }}
+          />
           <div>
             <h2>{member.name || "Your Name"}</h2>
-            <p>{member.designation}</p>
-            <span>{member.department}</span>
+            <p>{member.designation || "Designation"}</p>
+            <span>{member.specialization || "Specialization"}</span>
           </div>
         </div>
         <button className="save-btn" onClick={handleUpdate}>
@@ -131,13 +151,6 @@ function MemberDashboard() {
               }
             />
             <input
-              placeholder="Department"
-              value={member.department || ""}
-              onChange={(e) =>
-                setMember({ ...member, department: e.target.value })
-              }
-            />
-            <input
               placeholder="Specialization"
               value={member.specialization || ""}
               onChange={(e) =>
@@ -147,11 +160,11 @@ function MemberDashboard() {
             <input
               type="number"
               placeholder="Experience Years"
-              value={member.experienceYears || 0}
+              value={member.experience || 0}
               onChange={(e) =>
                 setMember({
                   ...member,
-                  experienceYears: Number(e.target.value)
+                  experience: Number(e.target.value)
                 })
               }
             />
@@ -160,26 +173,29 @@ function MemberDashboard() {
 
         {/* SKILLS */}
         {activeTab === "skills" && (
-          <textarea
-            rows="4"
-            placeholder="Comma separated skills"
-            value={member.skills.join(", ")}
-            onChange={(e) =>
-              setMember({
-                ...member,
-                skills: e.target.value
-                  .split(",")
-                  .map(s => s.trim())
-                  .filter(Boolean)
-              })
-            }
-          />
+          <div>
+            <textarea
+              rows="4"
+              placeholder="Comma separated skills"
+              value={Array.isArray(member.skills) ? member.skills.join(", ") : ""}
+              onChange={(e) =>
+                setMember({
+                  ...member,
+                  skills: e.target.value
+                    .split(",")
+                    .map(s => s.trim())
+                    .filter(Boolean)
+                })
+              }
+            />
+            <small>Enter skills separated by commas</small>
+          </div>
         )}
 
         {/* PROJECTS */}
         {activeTab === "projects" && (
           <div className="dynamic-section">
-            {member.projects.map((proj, index) => (
+            {member.projects && member.projects.map((proj, index) => (
               <div key={index} className="dynamic-card">
                 <input
                   placeholder="Project Title"
@@ -208,7 +224,7 @@ function MemberDashboard() {
                 setMember({
                   ...member,
                   projects: [
-                    ...member.projects,
+                    ...(member.projects || []),
                     { title: "", technologies: [] }
                   ]
                 })
@@ -222,7 +238,7 @@ function MemberDashboard() {
         {/* EXPERIENCE */}
         {activeTab === "experience" && (
           <div className="dynamic-section">
-            {member.workExperience.map((exp, index) => (
+            {member.workExperience && member.workExperience.map((exp, index) => (
               <div key={index} className="dynamic-card">
                 <input
                   placeholder="Company"
@@ -259,7 +275,7 @@ function MemberDashboard() {
                 setMember({
                   ...member,
                   workExperience: [
-                    ...member.workExperience,
+                    ...(member.workExperience || []),
                     { company: "", designation: "", duration: "" }
                   ]
                 })

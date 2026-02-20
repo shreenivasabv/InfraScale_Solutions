@@ -1,13 +1,28 @@
-import { Link } from "react-router-dom";
-import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 import "./Navbar.css";
 
 function Navbar() {
   const [openMenu, setOpenMenu] = useState(null);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Check if user is logged in
+    const token = localStorage.getItem("token");
+    setIsLoggedIn(!!token);
+  }, []);
 
   const handleMouseEnter = (menu) => setOpenMenu(menu);
   const handleMouseLeave = () => setOpenMenu(null);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("memberId");
+    setIsLoggedIn(false);
+    navigate("/");
+  };
 
   return (
     <nav className="navbar">
@@ -76,7 +91,16 @@ function Navbar() {
         
         {openMenu === "admin" && (
           <div className="admin-dropdown">
-            <Link to="/admin-login">Admin Login</Link>
+            {isLoggedIn ? (
+              <>
+                <Link to="/member-dashboard">Dashboard</Link>
+                <button onClick={handleLogout} style={{ cursor: "pointer" }}>
+                  Logout
+                </button>
+              </>
+            ) : (
+              <Link to="/admin-login">Admin Login</Link>
+            )}
           </div>
         )}
       </div>

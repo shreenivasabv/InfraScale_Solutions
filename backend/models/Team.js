@@ -6,7 +6,16 @@ const teamSchema = new mongoose.Schema({
   designation: String,
   specialization: String,
   experience: Number,
-  features: [String],
+  features: [String],  // Skills
+  projects: [{
+    title: String,
+    technologies: [String]
+  }],
+  workExperience: [{
+    company: String,
+    designation: String,
+    duration: String
+  }],
   image: String,
   createdAt: { type: Date, default: Date.now }
 });

@@ -1,5 +1,6 @@
 const MemberAuth = require("../models/Member");
 const MemberProfile = require("../models/MemberProfile");
+const Team = require("../models/Team");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
@@ -42,6 +43,15 @@ exports.register = async (req, res) => {
     await MemberProfile.create({
       authId: authUser._id
     });
+
+    // Link to Team member if exists
+    const teamMember = await Team.findOne({ email });
+    if (teamMember) {
+      await MemberAuth.findByIdAndUpdate(authUser._id, {
+        teamMemberId: teamMember._id
+      });
+      console.log("✅ Member linked to Team record:", teamMember._id);
+    }
 
     res.status(201).json({ message: "Account created successfully" });
 

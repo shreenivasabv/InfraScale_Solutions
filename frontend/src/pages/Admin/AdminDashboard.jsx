@@ -45,6 +45,7 @@ function AdminDashboard() {
 
   useEffect(() => {
     fetchMessages();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const scrollToMessages = () => {

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
-import API, { BASE } from "../services/api";
+import API, { BASE, buildUrl } from "../services/api";
 import "./ServiceDetail.css";
 
 export default function DetailedServicePage() {
@@ -15,7 +15,12 @@ export default function DetailedServicePage() {
       try {
         const base = BASE || import.meta.env.VITE_API_URL || "http://localhost:5000";
         const res = await axios.get(`${base}/api/detailed-services/${encodeURIComponent(slug)}`);
-        setItem(res.data);
+        const d = res.data;
+        // Normalize architecture image url
+        if (d && d.architectureImage) {
+          d.architectureImage = buildUrl(base, d.architectureImage) || d.architectureImage;
+        }
+        setItem(d);
       } catch (err) {
         console.error(err);
       } finally {

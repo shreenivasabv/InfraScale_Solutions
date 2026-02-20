@@ -13,6 +13,7 @@ function ServiceDetail() {
 
   useEffect(() => {
     fetchService();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [category]);
 
   const fetchService = async () => {

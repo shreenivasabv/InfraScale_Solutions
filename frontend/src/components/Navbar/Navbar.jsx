@@ -1,18 +1,12 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import "./Navbar.css";
 
 function Navbar() {
   const [openMenu, setOpenMenu] = useState(null);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(() => !!localStorage.getItem("token"));
   const navigate = useNavigate();
-
-  useEffect(() => {
-    // Check if user is logged in
-    const token = localStorage.getItem("token");
-    setIsLoggedIn(!!token);
-  }, []);
 
   const handleMouseEnter = (menu) => setOpenMenu(menu);
   const handleMouseLeave = () => setOpenMenu(null);

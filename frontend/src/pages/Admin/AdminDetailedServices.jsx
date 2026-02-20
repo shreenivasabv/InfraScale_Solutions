@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 import "./AdminServices.css";
-import API, { BASE } from "../../services/api";
+import { BASE, buildUrl } from "../../services/api";
 
 function AdminDetailedServices() {
   const [form, setForm] = useState({
@@ -21,34 +21,32 @@ function AdminDetailedServices() {
 
   const [lists, setLists] = useState([]);
 
-  useEffect(() => {
-    fetchAll();
-  }, []);
-
-  const fetchAll = async () => {
+  const fetchAll = useCallback(async () => {
     try {
       const base = BASE || import.meta.env.VITE_API_URL || "http://localhost:5000";
       const res = await axios.get(`${base}/api/detailed-services`);
       const data = res.data;
-      setLists(Array.isArray(data) ? data : (Array.isArray(data?.detailedServices) ? data.detailedServices : []));
+      const list = Array.isArray(data) ? data : (Array.isArray(data?.detailedServices) ? data.detailedServices : []);
+      // Normalize architectureImage to full URL for display
+      const normalized = list.map(item => ({
+        ...item,
+        architectureImage: buildUrl(base, item.architectureImage) || item.architectureImage
+      }));
+      setLists(normalized);
     } catch (err) {
       console.error(err);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    // Fetch data on mount  
+    void fetchAll();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
-  const addArrayItem = (setter, value, setInputClear) => {
-    if (!value) return;
-    setter((prev) => [...prev, value]);
-    if (setInputClear) setInputClear("");
-  };
-
-  const addFaq = (q, a, clear) => {
-    if (!q || !a) return;
-    setFaqs((p) => [...p, { question: q, answer: a }]);
-    clear();
-  };
+  // array helpers handled inline in ArrayField and FaqField components
 
   const submit = async (e) => {
     e.preventDefault();

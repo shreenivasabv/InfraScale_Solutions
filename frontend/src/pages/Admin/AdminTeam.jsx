@@ -17,7 +17,7 @@ function AdminTeam() {
   });
   const [image, setImage] = useState(null);
 
-  const token = localStorage.getItem("token");
+  // token used at request time directly via localStorage when needed
 
   const fetchMembers = async () => {
   try {
@@ -26,11 +26,13 @@ function AdminTeam() {
     const res = await axios.get(`${API_BASE}/api/team`);
     setMembers(res.data);
   } catch (err) {
+    console.error(err);
     toast.error("Failed to fetch members");
   }
 };
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchMembers();
   }, []);
 
@@ -62,6 +64,7 @@ function AdminTeam() {
     setImage(null);
     fetchMembers();
   } catch (err) {
+    console.error(err);
     toast.error(err.response?.data?.message || "Error adding member");
   }
 };
@@ -76,6 +79,7 @@ const deleteMember = async (id) => {
     toast.success("Deleted");
     fetchMembers();
   } catch (err) {
+    console.error(err);
     toast.error("Delete failed");
   }
 };

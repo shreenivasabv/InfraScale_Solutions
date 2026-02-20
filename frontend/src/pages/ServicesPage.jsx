@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
-import API, { BASE } from "../services/api";
+import API, { BASE, buildUrl } from "../services/api";
 import toast, { Toaster } from "react-hot-toast";
 import "./ServicesPage.css"; 
 
@@ -71,7 +71,7 @@ useEffect(() => {
               return (
                 <div key={service._id} className="service-card" onClick={handleClick} style={{ cursor: 'pointer' }}>
                   <div className="card-image-container">
-                    <img src={`${(BASE || import.meta.env.VITE_API_URL || "http://localhost:5000")}/${service.image}`} alt={service.title} />
+                    <img src={buildUrl(BASE, service.image) || "/placeholder.png"} alt={service.title} />
                   </div>
                   <div className="card-content">
                     <h3>{service.title}</h3>

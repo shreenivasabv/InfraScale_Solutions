@@ -44,6 +44,7 @@ function MessagesPage() {
 
   useEffect(() => {
     fetchMessages();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (loading) return <div className="loader">Loading Inbox...</div>;

@@ -22,7 +22,6 @@ function AdminDashboard() {
     }
   };
 
-  // --- NEW: Delete Function ---
   const deleteMessage = async (id) => {
     if (!window.confirm("Are you sure you want to delete this query?")) return;
 
@@ -31,8 +30,6 @@ function AdminDashboard() {
         headers: { Authorization: token }
       });
       
-      // Update state locally: filter out the deleted message
-      // This automatically decreases the count in the header!
       setMessages(messages.filter(msg => msg._id !== id));
       toast.success("Message deleted");
     } catch (err) {
@@ -55,13 +52,10 @@ function AdminDashboard() {
           <h1>Admin Dashboard</h1>
           <p className="subtitle">Overview & Control Panel</p>
         </div>
-        {/* The count here updates automatically because it's linked to messages.length */}
         <button className="queries-btn" onClick={scrollToMessages}>
           <span className="icon">✉</span> View Queries ({messages.length})
         </button>
       </header>
-
-      {/* ... Welcome Card ... */}
 
       <section ref={messageSectionRef} className="messages-section">
         <h2>User Queries</h2>

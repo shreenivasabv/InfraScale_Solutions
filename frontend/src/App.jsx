@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import Home from "./pages/Home";
 import ContactPage from "./pages/ContactPage";
-import Company from "./pages/Company";
+import AboutCompany from "./pages/AboutCompany";
 import Team from "./components/Team/Team";
 import Services from "./components/Services/Services";
 import AdminLogin from "./pages/Admin/AdminLogin";
@@ -9,12 +9,14 @@ import AdminLayout from "./pages/Admin/AdminLayout";
 import AdminDashboard from "./pages/Admin/AdminDashboard";
 import AdminTeam from "./pages/Admin/AdminTeam";
 import AdminServices from "./pages/Admin/AdminServices";
+import AdminAbout from "./pages/Admin/AdminAbout";
 import ProtectedRoute from "./components/protectedRoute";
 import ServicesPage from "./pages/ServicesPage";
 import Navbar from "./components/Navbar/Navbar"; 
 import MemberLogin from "./pages/TeamMember/MemberLogin"; // Fixed typo in name
 import MemberRegister from "./pages/TeamMember/MemberRegister";
 import MemberDashboard from "./pages/TeamMember/MemberDashboard";
+
 
 function AppContent() {
   const location = useLocation();
@@ -37,7 +39,7 @@ function AppContent() {
         {/* --- PUBLIC WEBSITE ROUTES --- */}
         <Route path="/" element={<Home />} />
         <Route path="/contact" element={<ContactPage />} />
-        <Route path="/about/company" element={<Company />} />
+        <Route path="/about/company" element={<AboutCompany />} />
         <Route path="/services" element={<Services />} />
         <Route path="/team" element={<Team />} />
         <Route path="/services/:categoryName" element={<ServicesPage />} />
@@ -72,6 +74,7 @@ function AppContent() {
           <Route path="dashboard" element={<AdminDashboard />} />
           <Route path="team" element={<AdminTeam />} />
           <Route path="services" element={<AdminServices />} />
+          <Route path="about" element={<AdminAbout />} />
         </Route>
       </Routes>
     </>

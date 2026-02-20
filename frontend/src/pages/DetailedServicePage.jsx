@@ -86,7 +86,15 @@ export default function DetailedServicePage() {
         {item.architectureImage && (
           <div>
             <h3>Architecture</h3>
-            <img src={item.architectureImage} alt="architecture" style={{ maxWidth: '100%' }} />
+            <img
+              src={item.architectureImage || "/placeholder.png"}
+              alt="architecture"
+              style={{ maxWidth: '100%' }}
+              onError={e => {
+                e.target.onerror = null;
+                e.target.src = "/placeholder.png";
+              }}
+            />
           </div>
         )}
 

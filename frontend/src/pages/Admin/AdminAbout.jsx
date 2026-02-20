@@ -43,7 +43,7 @@ function AdminAbout() {
   return (
     <div className="dashboard-view">
       <h1>Manage About Page</h1>
-
+      <Toaster position="top-right" />
       <div className="about-admin-section">
         <input
           placeholder="Heading"
@@ -52,6 +52,14 @@ function AdminAbout() {
             setAbout({ ...about, heading: e.target.value })
           }
         />
+        {/* Values array editor */}
+        <div style={{ margin: '16px 0' }}>
+          <label>Core Values</label>
+          <ArrayField
+            values={about.values || []}
+            setValues={vals => setAbout({ ...about, values: vals })}
+          />
+        </div>
 
         <textarea
           rows="4"
@@ -60,7 +68,7 @@ function AdminAbout() {
           onChange={(e) =>
             setAbout({ ...about, description: e.target.value })
           }
-        />
+          />
 
         <textarea
           rows="3"
@@ -89,3 +97,31 @@ function AdminAbout() {
 }
 
 export default AdminAbout;
+
+function ArrayField({ values, setValues }) {
+  const [input, setInput] = useState("");
+  return (
+    <div>
+      <div style={{ display: "flex", gap: "8px", marginBottom: 8 }}>
+        <input
+          value={input}
+          onChange={e => setInput(e.target.value)}
+          placeholder="Add value"
+        />
+        <button type="button" onClick={() => {
+          if (input) {
+            setValues([...values, input]);
+            setInput("");
+          }
+        }}>Add</button>
+      </div>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+        {values.map((val, idx) => (
+          <span key={idx} style={{ background: '#eee', padding: '4px 8px', borderRadius: 4 }}>
+            {val} <button type="button" onClick={() => setValues(values.filter((_, i) => i !== idx))}>x</button>
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}

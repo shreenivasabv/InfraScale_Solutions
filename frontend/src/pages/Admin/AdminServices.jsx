@@ -4,7 +4,7 @@ import toast, { Toaster } from "react-hot-toast";
 import "./AdminServices.css";
 
 
-const API_BASE = import.meta.env.VITE_API_URL;
+  const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5000";
 function AdminServices() {
   // Initial state includes the category field
   const [form, setForm] = useState({ title: "", description: "", category: "" });

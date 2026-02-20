@@ -2,8 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 import "./AdminServices.css";
-
-const API = import.meta.env.VITE_API_URL;
+import API, { BASE } from "../../services/api";
 
 function AdminDetailedServices() {
   const [form, setForm] = useState({
@@ -28,8 +27,10 @@ function AdminDetailedServices() {
 
   const fetchAll = async () => {
     try {
-      const res = await axios.get(`${API}/api/detailed-services`);
-      setLists(res.data || []);
+      const base = BASE || import.meta.env.VITE_API_URL || "http://localhost:5000";
+      const res = await axios.get(`${base}/api/detailed-services`);
+      const data = res.data;
+      setLists(Array.isArray(data) ? data : (Array.isArray(data?.detailedServices) ? data.detailedServices : []));
     } catch (err) {
       console.error(err);
     }
@@ -61,7 +62,8 @@ function AdminDetailedServices() {
         faqs,
       };
 
-      await axios.post(`${API}/api/detailed-services`, payload, {
+      const base = BASE || import.meta.env.VITE_API_URL || "http://localhost:5000";
+      await axios.post(`${base}/api/detailed-services`, payload, {
         headers: { Authorization: `Bearer ${token}` },
       });
 

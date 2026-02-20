@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 import "./Admin.css"; 
 
 
-const API_BASE = import.meta.env.VITE_API_URL;
+const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5000";
 function AdminDashboard() {
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(true);

@@ -4,8 +4,7 @@ import { useNavigate } from "react-router-dom";
 import "./Admin.css";
 
 
-const API_BASE = import.meta.env.VITE_API_URL;
-console.log("API_BASE:", API_BASE);
+const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
 function AdminLogin() {
   const [email, setEmail] = useState("");

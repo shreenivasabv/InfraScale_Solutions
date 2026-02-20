@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import API, { BASE } from "../services/api";
 import "./ServiceDetail.css";
-
-const API = import.meta.env.VITE_API_URL;
 
 export default function DetailedServicePage() {
   const { slug } = useParams();
@@ -14,7 +13,8 @@ export default function DetailedServicePage() {
   useEffect(() => {
     const fetch = async () => {
       try {
-        const res = await axios.get(`${API}/api/detailed-services/${slug}`);
+        const base = BASE || import.meta.env.VITE_API_URL || "http://localhost:5000";
+        const res = await axios.get(`${base}/api/detailed-services/${encodeURIComponent(slug)}`);
         setItem(res.data);
       } catch (err) {
         console.error(err);

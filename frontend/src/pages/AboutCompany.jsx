@@ -4,7 +4,7 @@ import "./AboutCompany.css";
 
 
 
-const API_BASE = import.meta.env.VITE_API_URL;
+const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
 const API = `${API_BASE}/api/about`;
 

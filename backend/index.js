@@ -34,9 +34,11 @@ if (!fs.existsSync("./uploads")) {
 }
 
 // --- DATABASE ---
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log("✅ MongoDB Connected Successfully"))
-  .catch((err) => console.error("❌ MongoDB Error:", err.message));
+// Allow a local fallback for development when MONGO_URI is not set.
+const mongoUri = process.env.MONGO_URI || "mongodb://127.0.0.1:27017/infrascale";
+mongoose.connect(mongoUri)
+  .then(() => console.log("✅ MongoDB Connected Successfully ->", mongoUri))
+  .catch((err) => console.error("❌ MongoDB Error:", err && err.message ? err.message : err));
 
 // --- ADMIN SEED ---
 const Admin = require("./models/Admin");

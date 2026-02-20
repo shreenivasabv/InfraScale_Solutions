@@ -1,21 +1,14 @@
 import "./Hero.css";
-import videoSrc from "../../assets/new_video.mp4";
 
 function Hero() {
 
   return (
     <section className="hero">
-      {videoSrc && (
-        <video 
-          autoPlay 
-          loop 
-          muted 
-          playsInline 
-          className="hero-video"
-        >
-          <source src={videoSrc} type="video/mp4" />
-        </video>
-      )}
+      <img 
+        src="/img.jpeg" 
+        alt="InfraScale Solutions - Infrastructure Engineering"
+        className="hero-image"
+      />
 
       <div className="hero-content">
         <h1>

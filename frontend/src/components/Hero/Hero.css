@@ -11,8 +11,8 @@
   overflow: hidden; /* Prevents video from spilling out */
 }
 
-/* Video Background Styling */
-.hero-video {
+/* Image Background Styling */
+.hero-image {
   position: absolute;
   top: 50%;
   left: 50%;

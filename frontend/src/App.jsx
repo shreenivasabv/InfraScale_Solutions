@@ -10,7 +10,7 @@ import AdminDashboard from "./pages/Admin/AdminDashboard";
 import AdminTeam from "./pages/Admin/AdminTeam";
 import AdminServices from "./pages/Admin/AdminServices";
 import AdminAbout from "./pages/Admin/AdminAbout";
-import ProtectedRoute from "./components/protectedRoute";
+import ProtectedRoute from "./components/ProtectedRoute";
 import ServicesPage from "./pages/ServicesPage";
 import Navbar from "./components/Navbar/Navbar"; 
 import MemberLogin from "./pages/TeamMember/MemberLogin"; // Fixed typo in name

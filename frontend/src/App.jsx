@@ -9,6 +9,8 @@ import AdminLayout from "./pages/Admin/AdminLayout";
 import AdminDashboard from "./pages/Admin/AdminDashboard";
 import AdminTeam from "./pages/Admin/AdminTeam";
 import AdminServices from "./pages/Admin/AdminServices";
+import AdminDetailedServices from "./pages/Admin/AdminDetailedServices";
+import DetailedServicePage from "./pages/DetailedServicePage";
 import AdminAbout from "./pages/Admin/AdminAbout";
 import ProtectedRoute from "./components/ProtectedRoute";
 import ServicesPage from "./pages/ServicesPage";
@@ -76,8 +78,12 @@ function AppContent() {
           <Route path="dashboard" element={<AdminDashboard />} />
           <Route path="team" element={<AdminTeam />} />
           <Route path="services" element={<AdminServices />} />
+          <Route path="detailed-services" element={<AdminDetailedServices />} />
           <Route path="about" element={<AdminAbout />} />
         </Route>
+
+        {/* Public detailed service by slug */}
+        <Route path="/services/details/:slug" element={<DetailedServicePage />} />
       </Routes>
     </>
   );

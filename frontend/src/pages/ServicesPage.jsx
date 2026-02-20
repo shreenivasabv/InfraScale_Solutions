@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 import "./ServicesPage.css"; 
@@ -8,6 +8,7 @@ const API = import.meta.env.VITE_API_URL;
 
 function ServicesPage() {
   const { categoryName } = useParams(); // This captures the name from the URL
+  const navigate = useNavigate();
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -48,17 +49,20 @@ useEffect(() => {
       <h1 className="section-title">{categoryName} Services</h1>
       <div className="services-grid">
         {services.length > 0 ? (
-          services.map((service) => (
-            <div key={service._id} className="service-card">
-              <div className="card-image-container">
-                <img src={`${API}/${service.image}`} alt={service.title} />
+          services.map((service) => {
+            const slug = service.slug || (service.title || "").toLowerCase().replace(/\s+/g, "-");
+            return (
+              <div key={service._id} className="service-card" onClick={() => navigate(`/services/details/${slug}`)} style={{ cursor: 'pointer' }}>
+                <div className="card-image-container">
+                  <img src={`${API}/${service.image}`} alt={service.title} />
+                </div>
+                <div className="card-content">
+                  <h3>{service.title}</h3>
+                  <p>{service.description}</p>
+                </div>
               </div>
-              <div className="card-content">
-                <h3>{service.title}</h3>
-                <p>{service.description}</p>
-              </div>
-            </div>
-          ))
+            );
+          })
         ) : (
           <p className="empty-state">No services found for {categoryName}.</p>
         )}

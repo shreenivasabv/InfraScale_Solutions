@@ -58,6 +58,7 @@ createDefaultAdmin();
 // --- ROUTES ---
 app.use("/api/admin", require("./routes/adminRoutes"));
 app.use("/api/services", require("./routes/serviceRoutes"));
+app.use("/api/detailed-services", require("./routes/detailedServiceRoutes"));
 app.use("/api/contact", require("./routes/contactRoutes"));
 app.use("/api/about", require("./routes/aboutRoutes"));
 app.use("/api/team", require("./routes/teamRoutes"));

@@ -10,7 +10,7 @@ const app = express();
 // --- MIDDLEWARE ---
 const allowedOrigins =
   process.env.NODE_ENV === "production"
-    ? ["https://your-frontend.vercel.app"]
+    ? ["https://infra-scale-solutions.vercel.app/"]
     : ["http://localhost:5173"];
 
 app.use(

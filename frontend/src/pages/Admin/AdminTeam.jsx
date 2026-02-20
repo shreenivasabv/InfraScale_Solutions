@@ -3,6 +3,8 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import "./AdminTeam.css"; // Complete this import
 
+
+const API_BASE = import.meta.env.VITE_API_URL;
 function AdminTeam() {
   const [members, setMembers] = useState([]);
   const [form, setForm] = useState({

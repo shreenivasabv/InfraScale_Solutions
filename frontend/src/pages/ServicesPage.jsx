@@ -4,6 +4,8 @@ import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 import "./ServicesPage.css"; 
 
+const API = import.meta.env.VITE_API_URL;
+
 function ServicesPage() {
   const { categoryName } = useParams(); // This captures the name from the URL
   const [services, setServices] = useState([]);
@@ -17,7 +19,7 @@ useEffect(() => {
     setLoading(true);
     try {
       // Use the standardized URL that matches your backend
-      const url = `http://localhost:5000/api/services?category=${categoryName}`;
+      const url = `${API}/api/services?category=${categoryName}`;
       console.log("DEBUG: Axios calling URL:", url);
 
       const res = await axios.get(url);

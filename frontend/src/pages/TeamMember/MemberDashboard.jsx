@@ -2,7 +2,10 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import "./MemberDashboard.css";
 
-const API = "http://localhost:5000/api/member-profile";
+const API_BASE = import.meta.env.VITE_API_URL;
+
+
+const API = `${API_BASE}/api/member-profile`;
 
 function MemberDashboard() {
   const [member, setMember] = useState(null);
@@ -78,7 +81,7 @@ function MemberDashboard() {
     member.imagePreview
       ? member.imagePreview
       : member.image && member.image !== ""
-      ? `http://localhost:5000${member.image}`
+      ? `${API_BASE} ${member.image}`
       : "/default-profile.png"   // 👈 fallback image
   }
   alt="profile"

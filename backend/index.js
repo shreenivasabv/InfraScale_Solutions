@@ -8,7 +8,17 @@ const fs = require("fs");
 const app = express();
 
 // --- MIDDLEWARE ---
-app.use(cors());
+const allowedOrigins =
+  process.env.NODE_ENV === "production"
+    ? ["https://your-frontend.vercel.app"]
+    : ["http://localhost:5173"];
+
+app.use(
+  cors({
+    origin: allowedOrigins,
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -52,6 +62,6 @@ app.use("/api/about", require("./routes/aboutRoutes"));
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
-  console.log(`🚀 Server Running on http://localhost:${PORT}`);
+app.listen(PORT, '0.0.0.0',() => {
+  console.log(`🚀 Server Running on{PORT}`);
 });

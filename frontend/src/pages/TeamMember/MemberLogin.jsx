@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./MemberAuth.css"; // Using the same CSS as registration
 
+const API_BASE = import.meta.env.VITE_API_URL;
+
 function MemberLogin() {
   const [form, setForm] = useState({
     email: "",

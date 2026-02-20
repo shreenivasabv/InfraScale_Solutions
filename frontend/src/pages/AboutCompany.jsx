@@ -2,7 +2,11 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import "./AboutCompany.css";
 
-const API = "http://localhost:5000/api/about";
+
+
+const API_BASE = import.meta.env.VITE_API_URL;
+
+const API = `${API_BASE}/api/about`;
 
 function AboutCompany() {
   const [about, setAbout] = useState(null);

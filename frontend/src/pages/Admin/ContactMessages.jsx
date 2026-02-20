@@ -3,6 +3,8 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import "./ContactMessages.css"; 
 
+const API_BASE = import.meta.env.VITE_API_URL;
+
 function MessagesPage() {
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(true);

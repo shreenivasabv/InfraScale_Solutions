@@ -3,6 +3,8 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import "./AdminAbout.css";
 
+
+const API_BASE = import.meta.env.VITE_API_URL;
 function AdminAbout() {
   const [about, setAbout] = useState({});
   const [loading, setLoading] = useState(true);
@@ -11,7 +13,7 @@ function AdminAbout() {
   useEffect(() => {
     const fetchAbout = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/about");
+        const res = await axios.get(`${API_BASE}/api/about`);
         setAbout(res.data);
       } catch {
         toast.error("Failed to load About content");
@@ -26,7 +28,7 @@ function AdminAbout() {
   const saveAbout = async () => {
     try {
       await axios.put(
-        "http://localhost:5000/api/about",
+        `${API_BASE}/api/about`,
         about,
         { headers: { Authorization: token } }
       );

@@ -13,12 +13,15 @@ function AdminDashboard() {
 
   const fetchMessages = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/contact", {
-        headers: { Authorization: token }
+      console.log("📨 Fetching messages with token:", token ? "✅ Present" : "❌ Missing");
+      const res = await axios.get(`${API_BASE}/api/contact`, {
+        headers: { Authorization: `Bearer ${token}` }
       });
+      console.log("✅ Messages fetched:", res.data);
       setMessages(res.data);
     } catch (err) {
-      toast.error("Failed to load messages.");
+      console.error("❌ Failed to fetch messages:", err.response?.status, err.response?.data);
+      toast.error(err.response?.data?.message || "Failed to load messages.");
     } finally {
       setLoading(false);
     }
@@ -28,14 +31,15 @@ function AdminDashboard() {
     if (!window.confirm("Are you sure you want to delete this query?")) return;
 
     try {
-      await axios.delete(`http://localhost:5000/api/contact/${id}`, {
-        headers: { Authorization: token }
+      await axios.delete(`${API_BASE}/api/contact/${id}`, {
+        headers: { Authorization: `Bearer ${token}` }
       });
       
       setMessages(messages.filter(msg => msg._id !== id));
       toast.success("Message deleted");
     } catch (err) {
-      toast.error("Failed to delete message");
+      console.error("Delete error:", err);
+      toast.error(err.response?.data?.message || "Failed to delete message");
     }
   };
 
@@ -81,7 +85,7 @@ function AdminDashboard() {
                     </button>
                   </div>
                 </div>
-                <p className="msg-sub">{msg.email} | {msg.subject}</p>
+                <p className="msg-sub">{msg.email} {msg.environment && `| ${msg.environment}`}</p>
                 <p className="msg-text">{msg.message}</p>
               </div>
             ))}

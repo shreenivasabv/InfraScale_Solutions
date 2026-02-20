@@ -18,3 +18,7 @@ html, body {
 html {
   scroll-behavior: smooth;
 }
+
+.page-content {
+  padding-top: 80px; /* Same height as navbar */
+}

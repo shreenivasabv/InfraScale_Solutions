@@ -16,6 +16,7 @@ import Navbar from "./components/Navbar/Navbar";
 import MemberLogin from "./pages/TeamMember/MemberLogin"; // Fixed typo in name
 import MemberRegister from "./pages/TeamMember/MemberRegister";
 import MemberDashboard from "./pages/TeamMember/MemberDashboard";
+import MemberProfile from "../src/pages/TeamMember/MemberProfile";
 
 
 function AppContent() {
@@ -43,6 +44,7 @@ function AppContent() {
         <Route path="/services" element={<Services />} />
         <Route path="/team" element={<Team />} />
         <Route path="/services/:categoryName" element={<ServicesPage />} />
+        <Route path="/team/:id" element={<MemberProfile/>} />
         
         {/* --- MEMBER AUTHENTICATION ROUTES --- */}
         <Route path="/member-login" element={<MemberLogin />} />

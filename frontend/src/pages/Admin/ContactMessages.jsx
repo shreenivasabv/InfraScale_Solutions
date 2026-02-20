@@ -12,34 +12,35 @@ function MessagesPage() {
 
   const fetchMessages = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/contact", {
-        headers: { Authorization: token }
+      console.log("📨 Fetching messages with token:", token ? "✅ Present" : "❌ Missing");
+      const res = await axios.get(`${API_BASE}/api/contact`, {
+        headers: { Authorization: `Bearer ${token}` }
       });
+      console.log("✅ Messages fetched:", res.data);
       setMessages(res.data);
     } catch (err) {
-      toast.error("Failed to load messages. Please check your connection.");
+      console.error("❌ Failed to fetch messages:", err.response?.status, err.response?.data);
+      toast.error(err.response?.data?.message || "Failed to load messages. Please check your connection.");
     } finally {
       setLoading(false);
     }
   };
 
   const deleteMessage = async (id) => {
-  if (!window.confirm("Are you sure?")) return;
+    if (!window.confirm("Are you sure?")) return;
 
-  try {
-    // Ensure the URL is exactly like this:
-    await axios.delete(`http://localhost:5000/api/contact/${id}`, {
-      headers: { Authorization: token }
-    });
-    
-    // Refresh the local list so the count decreases
-    setMessages(messages.filter(msg => msg._id !== id));
-    toast.success("Deleted");
-  } catch (err) {
-    console.error(err);
-    toast.error("Failed to delete. Check console.");
-  }
-};
+    try {
+      await axios.delete(`${API_BASE}/api/contact/${id}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      
+      setMessages(messages.filter(msg => msg._id !== id));
+      toast.success("Message deleted");
+    } catch (err) {
+      console.error("Delete error:", err);
+      toast.error(err.response?.data?.message || "Failed to delete");
+    }
+  };
 
   useEffect(() => {
     fetchMessages();
@@ -65,10 +66,16 @@ function MessagesPage() {
                 </span>
               </div>
               <div className="msg-email">{msg.email}</div>
-              <div className="msg-subject">Subject: {msg.subject}</div>
+              {msg.environment && <div className="msg-subject">Environment: {msg.environment}</div>}
               <div className="msg-body">
                 <p>{msg.message}</p>
               </div>
+              <button 
+                className="delete-btn" 
+                onClick={() => deleteMessage(msg._id)}
+              >
+                Delete
+              </button>
             </div>
           ))
         ) : (

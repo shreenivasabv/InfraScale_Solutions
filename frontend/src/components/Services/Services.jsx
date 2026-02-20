@@ -2,11 +2,13 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import "./Services.css";
 
+const API_BASE = import.meta.env.VITE_API_URL;
+
 function Services() {
   const [services, setServices] = useState([]);
 
   useEffect(() => {
-    axios.get("http://localhost:5000/api/services")
+    axios.get(`${API_BASE}/api/services`)
       .then(res => setServices(res.data));
   }, []);
 

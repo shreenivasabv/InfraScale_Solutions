@@ -23,7 +23,7 @@ function MemberLogin() {
     e.preventDefault();
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/member-auth/login",
+        `${API_BASE}/api/member-auth/login`,
         form
       );
 

@@ -51,7 +51,7 @@ useEffect(() => {
           services.map((service) => (
             <div key={service._id} className="service-card">
               <div className="card-image-container">
-                <img src={`http://localhost:5000/${service.image}`} alt={service.title} />
+                <img src={`${API}/${service.image}`} alt={service.title} />
               </div>
               <div className="card-content">
                 <h3>{service.title}</h3>

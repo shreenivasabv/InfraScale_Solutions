@@ -3,6 +3,8 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import "./Contact.css";
 
+const API_BASE = import.meta.env.VITE_API_URL;
+
 function Contact() {
   const [formData, setFormData] = useState({
     name: "",
@@ -21,7 +23,7 @@ function Contact() {
     setIsSending(true);
 
     try {
-      await axios.post("http://localhost:5000/api/contact", formData);
+      await axios.post(`${API_BASE}/api/contact`, formData);
       
       // Professional meaningful popup
       toast.success(
@@ -45,8 +47,9 @@ function Contact() {
       setFormData({ name: "", email: "", environment: "", message: "" });
 
     } catch (err) {
-      toast.error("Transmission failed. Please check your connection.");
-      console.error(err);
+      const errorMsg = err.response?.data?.message || "Transmission failed. Please check your connection.";
+      toast.error(errorMsg);
+      console.error("Contact submission error:", err);
     } finally {
       setIsSending(false);
     }

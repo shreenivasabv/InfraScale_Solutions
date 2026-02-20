@@ -10,7 +10,7 @@ const app = express();
 // --- MIDDLEWARE ---
 const allowedOrigins =
   process.env.NODE_ENV === "production"
-    ? ["https://your-frontend.vercel.app"]
+    ? ["https://infra-scale-solutions.vercel.app/"]
     : ["http://localhost:5173"];
 
 app.use(
@@ -55,13 +55,13 @@ createDefaultAdmin();
 app.use("/api/admin", require("./routes/adminRoutes"));
 app.use("/api/services", require("./routes/serviceRoutes"));
 app.use("/api/contact", require("./routes/contactRoutes"));
-app.use("/api/team", require("./routes/teamRoutes"));
-app.use("/api/member-auth", require("./routes/MemberAuthRoutes"));
-app.use("/api/member-profile", require("./routes/MemberProfileRoutes"));
 app.use("/api/about", require("./routes/aboutRoutes"));
+app.use("/api/team", require("./routes/teamRoutes"));
+app.use("/api/member-auth", require("./routes/memberAuthRoutes"));
+app.use("/api/members", require("./routes/memberProfileRoutes"));
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, '0.0.0.0',() => {
-  console.log(`🚀 Server Running on{PORT}`);
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`🚀 Server Running on ${PORT}`);
 });

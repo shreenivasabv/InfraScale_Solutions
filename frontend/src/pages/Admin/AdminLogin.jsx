@@ -5,6 +5,7 @@ import "./Admin.css";
 
 
 const API_BASE = import.meta.env.VITE_API_URL;
+console.log("API_BASE:", API_BASE);
 
 function AdminLogin() {
   const [email, setEmail] = useState("");
@@ -15,25 +16,43 @@ const handleLogin = async (e) => {
     e.preventDefault();
 
     try {
-      console.log("Attempting login with:", email); // Test if button click triggers
-      
-      const res = await axios.post(
-        "http://localhost:5000/api/admin/login",
-        { email, password }
-      );
+  console.log("Attempting login with:", email);
 
-      console.log("Login Response:", res.data); // Test if backend responds
-      
-      if (res.data.token) {
-        localStorage.setItem("token", res.data.token);
-        navigate("/admin/dashboard");
-      }
-    } catch (err) {
-      // Print the specific backend error to the console and screen
-      const errorMessage = err.response?.data?.message || "Server connection failed";
-      console.error("Backend Error Object:", err.response); 
-      alert(`Login Failed: ${errorMessage}`); 
+  const res = await axios.post(
+    `${API_BASE}/api/admin/login`,
+    { email, password }
+  );
+
+  if (res.status === 200 && res.data.token) {
+    localStorage.setItem("token", res.data.token);
+    navigate("/admin/dashboard");
+  }
+
+} catch (err) {
+  console.error("Full Error:", err);
+
+  // Backend responded with error (400, 401, 500 etc.)
+  if (err.response) {
+    const status = err.response.status;
+    const message = err.response.data?.message;
+
+    if (status === 400 || status === 401) {
+      alert(message || "Invalid credentials");
+    } else if (status === 500) {
+      alert("Server error. Please try again later.");
+    } else {
+      alert(message || "Something went wrong.");
     }
+  } 
+  // No response from backend (network issue, CORS, wrong URL)
+  else if (err.request) {
+    alert("Unable to connect to server.");
+  } 
+  // Something else broke
+  else {
+    alert("Unexpected error occurred.");
+  }
+}
   };
 
   return (

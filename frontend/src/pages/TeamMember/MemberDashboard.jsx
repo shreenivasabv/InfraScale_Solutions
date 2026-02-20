@@ -5,7 +5,7 @@ import "./MemberDashboard.css";
 const API_BASE = import.meta.env.VITE_API_URL;
 
 
-const API = `${API_BASE}/api/member-profile`;
+const API = `${API_BASE}/api/members`;
 
 function MemberDashboard() {
   const [member, setMember] = useState(null);
@@ -81,7 +81,7 @@ function MemberDashboard() {
     member.imagePreview
       ? member.imagePreview
       : member.image && member.image !== ""
-      ? `${API_BASE} ${member.image}`
+      ? `${API_BASE}${member.image}`
       : "/default-profile.png"   // 👈 fallback image
   }
   alt="profile"

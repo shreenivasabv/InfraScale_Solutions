@@ -23,7 +23,7 @@ function AdminTeam() {
   try {
     // Note: Your backend GET route is public, but if you want to be safe, 
     // you can add the header here too.
-    const res = await axios.get("http://localhost:5000/api/team");
+    const res = await axios.get(`${API_BASE}/api/team`);
     setMembers(res.data);
   } catch (err) {
     toast.error("Failed to fetch members");
@@ -49,7 +49,7 @@ function AdminTeam() {
   formData.append("image", image);
 
   try {
-    await axios.post("http://localhost:5000/api/team", formData, {
+    await axios.post(`${API_BASE}/api/team`, formData, {
       headers: { 
         // FIX: Added `Bearer ` prefix
         Authorization: `Bearer ${localStorage.getItem("token")}`, 
@@ -69,7 +69,7 @@ function AdminTeam() {
 const deleteMember = async (id) => {
   if (!window.confirm("Are you sure?")) return;
   try {
-    await axios.delete(`http://localhost:5000/api/team/${id}`, {
+    await axios.delete(`${API_BASE}/api/team/${id}`, {
       // FIX: Added `Bearer ` prefix
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
     });

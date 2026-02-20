@@ -1,30 +1,49 @@
-const MemberAuth = require("../models/MemberAuth");
+const MemberAuth = require("../models/Member");
 const MemberProfile = require("../models/MemberProfile");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+
+// Input validation
+const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+const validatePassword = (password) => password && password.length >= 6;
 
 // REGISTER
 exports.register = async (req, res) => {
   try {
     const { email, password } = req.body;
 
+    // Validation
+    if (!email || !password) {
+      return res.status(400).json({ message: "Email and password required" });
+    }
+
+    if (!validateEmail(email)) {
+      return res.status(400).json({ message: "Invalid email format" });
+    }
+
+    if (!validatePassword(password)) {
+      return res.status(400).json({ message: "Password must be at least 6 characters" });
+    }
+
     const existing = await MemberAuth.findOne({ email });
-    if (existing)
-      return res.status(400).json({ message: "Email already exists" });
+    if (existing) {
+      return res.status(400).json({ message: "Email already registered" });
+    }
 
     const hashed = await bcrypt.hash(password, 10);
 
     const authUser = await MemberAuth.create({
       email,
-      password: hashed
+      password: hashed,
+      isRegistered: true
     });
 
-    // create empty profile
+    // Create empty profile
     await MemberProfile.create({
       authId: authUser._id
     });
 
-    res.status(201).json({ message: "Account Activated Successfully" });
+    res.status(201).json({ message: "Account created successfully" });
 
   } catch (err) {
     console.error(err);
@@ -32,29 +51,35 @@ exports.register = async (req, res) => {
   }
 };
 
-
 // LOGIN
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
+    if (!email || !password) {
+      return res.status(400).json({ message: "Email and password required" });
+    }
+
     const user = await MemberAuth.findOne({ email });
-    if (!user)
-      return res.status(400).json({ message: "Invalid credentials" });
+    if (!user || !user.isRegistered) {
+      return res.status(401).json({ message: "Invalid credentials" });
+    }
 
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch)
-      return res.status(400).json({ message: "Invalid credentials" });
+    if (!isMatch) {
+      return res.status(401).json({ message: "Invalid credentials" });
+    }
 
     const token = jwt.sign(
       { id: user._id },
-      process.env.JWT_SECRET,
-      { expiresIn: "1d" }
+      process.env.JWT_SECRET || "your-secret-key",
+      { expiresIn: "7d" }
     );
 
     res.json({
       token,
-      memberId: user._id
+      memberId: user._id,
+      email: user.email
     });
 
   } catch (err) {

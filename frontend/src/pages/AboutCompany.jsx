@@ -19,11 +19,6 @@ function AboutCompany() {
 
   return (
     <div className="about-wrapper">
-      <section className="hero">
-        <h1>{about.heading}</h1>
-        <p className="tagline">{about.tagline}</p>
-      </section>
-
       <section className="about-section">
         <h2>Who We Are</h2>
         <p>{about.description}</p>

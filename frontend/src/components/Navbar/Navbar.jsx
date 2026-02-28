@@ -64,11 +64,6 @@ function Navbar() {
                   Storage & Backup
                 </Link>
               </li>
-              <li>
-                <Link to="/services/DevOps" onClick={() => setShowMobileMenu(false)}>
-                  DevOps
-                </Link>
-              </li>
             </ul>
           )}
         </li>

@@ -1,0 +1,144 @@
+/* ===== PAGE WRAPPER ===== */
+.member-detail-page {
+  min-height: 100vh;
+  padding: 60px 8%;
+  background: linear-gradient(135deg, #0f2027, #1c3b47, #243b55);
+  color: #ffffff;
+}
+
+/* ===== BACK BUTTON ===== */
+.back-btn {
+  background: transparent;
+  border: 1px solid #00bfff;
+  color: #00bfff;
+  padding: 8px 18px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s ease;
+  margin-bottom: 40px;
+}
+
+.back-btn:hover {
+  background: #00bfff;
+  color: #000;
+}
+
+/* ===== MAIN CONTAINER ===== */
+.member-detail-container {
+  background: rgba(255, 255, 255, 0.06);
+  padding: 50px;
+  border-radius: 18px;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+}
+
+/* ===== HEADER SECTION ===== */
+.member-header {
+  display: flex;
+  align-items: center;
+  gap: 50px;
+  margin-bottom: 60px;
+}
+
+/* ===== PROFILE IMAGE ===== */
+.member-header img {
+  width: 220px;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 20px;
+  border: 2px solid #00bfff;
+  background: #1a2c34;
+}
+
+/* ===== TEXT AREA ===== */
+.member-header h1 {
+  font-size: 36px;
+  margin-bottom: 12px;
+  font-weight: 600;
+}
+
+.designation {
+  font-size: 20px;
+  color: #00bfff;
+  margin-bottom: 6px;
+}
+
+.specialization {
+  font-size: 16px;
+  opacity: 0.8;
+}
+
+.experience {
+  margin-top: 12px;
+  font-weight: 500;
+  opacity: 0.9;
+}
+
+/* ===== SECTION STYLING ===== */
+section {
+  margin-top: 50px;
+}
+
+section h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #00bfff;
+}
+
+/* ===== SKILLS LIST ===== */
+section ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+section ul li {
+  background: rgba(0, 191, 255, 0.15);
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+}
+
+/* ===== PROJECT & EXPERIENCE CARDS ===== */
+.project-card,
+.experience-card {
+  background: rgba(255, 255, 255, 0.08);
+  padding: 25px;
+  border-radius: 14px;
+  margin-bottom: 20px;
+  transition: 0.3s ease;
+  border-left: 4px solid #00bfff;
+}
+
+.project-card:hover,
+.experience-card:hover {
+  transform: translateY(-5px);
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* ===== PROJECT TITLE ===== */
+.project-card h3,
+.experience-card h3 {
+  margin-bottom: 8px;
+  font-size: 18px;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 900px) {
+  .member-header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .member-header img {
+    width: 180px;
+    height: 180px;
+  }
+
+  .member-detail-container {
+    padding: 30px;
+  }
+}

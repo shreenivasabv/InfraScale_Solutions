@@ -1,115 +1,144 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
-import API, { BASE, buildUrl } from "../services/api";
-import "./ServiceDetail.css";
+import "./DetailedServicePage.css";
 
-export default function DetailedServicePage() {
+const API_BASE =
+  import.meta.env.VITE_API_URL || "http://localhost:5000";
+
+function DetailedServicePage() {
   const { slug } = useParams();
   const navigate = useNavigate();
-  const [item, setItem] = useState(null);
+
+  const [service, setService] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetch = async () => {
+    if (!slug) return;
+
+    const fetchService = async () => {
       try {
-        const base = BASE || import.meta.env.VITE_API_URL || "http://localhost:5000";
-        const res = await axios.get(`${base}/api/detailed-services/${encodeURIComponent(slug)}`);
-        const d = res.data;
-        // Normalize architecture image url
-        if (d && d.architectureImage) {
-          d.architectureImage = buildUrl(base, d.architectureImage) || d.architectureImage;
-        }
-        setItem(d);
+        setLoading(true);
+        setError(null);
+
+        const res = await axios.get(
+          `${API_BASE}/api/detailed-services/${slug}`
+        );
+
+        setService(res.data);
       } catch (err) {
-        console.error(err);
+        console.error("Detailed service error:", err);
+        setError("Unable to load service details");
       } finally {
         setLoading(false);
       }
     };
-    fetch();
+
+    fetchService();
   }, [slug]);
 
-  if (loading) return <div className="service-detail-page"><div className="loading">Loading...</div></div>;
-  if (!item) return (
-    <div className="service-detail-page">
-      <p>Not found</p>
-      <button onClick={() => navigate('/services')}>Back</button>
-    </div>
-  );
+  if (loading) {
+    return (
+      <div className="service-detail-page">
+        <div className="loading">Loading...</div>
+      </div>
+    );
+  }
+
+  if (error || !service) {
+    return (
+      <div className="service-detail-page">
+        <div className="error">
+          <h2>{error || "Service not found"}</h2>
+          <button onClick={() => navigate("/services")}>
+            Back to Services
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="service-detail-page">
-      <button className="back-link" onClick={() => navigate('/services')}>← Back to Services</button>
 
       <div className="service-detail-container">
         <div className="service-header">
-          <h1>{item.title}</h1>
-          <p className="service-category">{item.slug}</p>
+          <h1>{service.title}</h1>
         </div>
 
-        {item.heroDescription && (
-          <div className="service-description">
-            <h2>Intro</h2>
-            <p>{item.heroDescription}</p>
-          </div>
+        {service.heroDescription && (
+          <section>
+            <h2>Introduction</h2>
+            <p>{service.heroDescription}</p>
+          </section>
         )}
 
-        {item.overview && (
-          <div>
+        {service.overview && (
+          <section>
             <h2>Overview</h2>
-            <p>{item.overview}</p>
-          </div>
+            <p>{service.overview}</p>
+          </section>
         )}
 
-        {item.technologies?.length > 0 && (
-          <div>
+        {service.technologies?.length > 0 && (
+          <section>
             <h3>Technologies</h3>
-            <ul>{item.technologies.map((t,i)=> <li key={i}>{t}</li>)}</ul>
-          </div>
+            <ul>
+              {service.technologies.map((tech, i) => (
+                <li key={i}>{tech}</li>
+              ))}
+            </ul>
+          </section>
         )}
 
-        {item.benefits?.length > 0 && (
-          <div>
+        {service.benefits?.length > 0 && (
+          <section>
             <h3>Benefits</h3>
-            <ul>{item.benefits.map((b,i)=> <li key={i}>{b}</li>)}</ul>
-          </div>
+            <ul>
+              {service.benefits.map((benefit, i) => (
+                <li key={i}>{benefit}</li>
+              ))}
+            </ul>
+          </section>
         )}
 
-        {item.useCases?.length > 0 && (
-          <div>
+        {service.useCases?.length > 0 && (
+          <section>
             <h3>Use Cases</h3>
-            <ul>{item.useCases.map((u,i)=> <li key={i}>{u}</li>)}</ul>
-          </div>
+            <ul>
+              {service.useCases.map((useCase, i) => (
+                <li key={i}>{useCase}</li>
+              ))}
+            </ul>
+          </section>
         )}
 
-        {item.architectureImage && (
-          <div>
+        {service.architectureImage && (
+          <section>
             <h3>Architecture</h3>
             <img
-              src={item.architectureImage || "/placeholder.png"}
-              alt="architecture"
-              style={{ maxWidth: '100%' }}
-              onError={e => {
-                e.target.onerror = null;
-                e.target.src = "/placeholder.png";
-              }}
+              src={service.architectureImage}
+              alt="Architecture"
+              style={{ maxWidth: "100%" }}
             />
-          </div>
+          </section>
         )}
 
-        {item.faqs?.length > 0 && (
-          <div>
+        {service.faqs?.length > 0 && (
+          <section>
             <h3>FAQs</h3>
-            {item.faqs.map((f,i)=> (
-              <div key={i} className="faq">
-                <strong>{f.question}</strong>
-                <p>{f.answer}</p>
+            {service.faqs.map((faq, i) => (
+              <div key={i}>
+                <strong>{faq.question}</strong>
+                <p>{faq.answer}</p>
               </div>
             ))}
-          </div>
+          </section>
         )}
       </div>
     </div>
   );
 }
+
+export default DetailedServicePage;

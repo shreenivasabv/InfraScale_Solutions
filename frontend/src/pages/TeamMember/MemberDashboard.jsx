@@ -11,47 +11,29 @@ function MemberDashboard() {
   const [loading, setLoading] = useState(true);
 
   // 🔹 FETCH PROFILE (JWT BASED)
-  const fetchProfileData = async () => {
+  useEffect(() => {
+  const fetchProfile = async () => {
     try {
       const token = localStorage.getItem("token");
 
-      if (!token) {
-        toast.error("No token found. Please login.");
-        setLoading(false);
-        return;
-      }
-
-      // First, get member auth to find teamMemberId
-      const authRes = await axios.get(`${API_BASE}/api/members/me`, {
-        headers: {
-          Authorization: `Bearer ${token}`
+      const res = await axios.get(
+        `${API_BASE}/api/members/me`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
         }
-      });
-      
-      console.log("MEMBER AUTH DATA:", authRes.data);
+      );
 
-      // If member has teamMemberId, fetch team member details
-      if (authRes.data.teamMemberId) {
-        const teamRes = await axios.get(`${API_BASE}/api/team/${authRes.data.teamMemberId}`);
-        console.log("TEAM MEMBER DATA:", teamRes.data);
-        
-        setMember({
-          ...teamRes.data,
-          authId: authRes.data._id,
-          email: authRes.data.email,
-          _id: authRes.data.teamMemberId
-        });
-      } else {
-        setMember(authRes.data);
-      }
+      setMember(res.data);
 
-    } catch (error) {
-      console.error("Failed to fetch profile:", error.response?.data || error.message);
-      toast.error("Failed to load profile");
-    } finally {
-      setLoading(false);
+    } catch (err) {
+      console.error(err);
     }
   };
+
+  fetchProfile();
+}, []);
 
   useEffect(() => {
     fetchProfileData();
@@ -59,32 +41,37 @@ function MemberDashboard() {
 
   // 🔹 UPDATE PROFILE
   const handleUpdate = async () => {
-    try {
-      const token = localStorage.getItem("token");
+  try {
+    const token = localStorage.getItem("token");
 
-      const updateData = {
-        skills: member.skills || [],
-        projects: member.projects || [],
-        workExperience: member.workExperience || [],
-        designation: member.designation,
-        name: member.name,
-        specialization: member.specialization,
-        experience: member.experience
-      };
+    const updateData = {
+      name: member.name,
+      designation: member.designation,
+      specialization: member.specialization,
+      experience: member.experience,
+      skills: member.skills || [],
+      projects: member.projects || [],
+      workExperience: member.workExperience || []
+    };
 
-      await axios.put(`${API_BASE}/api/members/me`, updateData, {
+    const res = await axios.put(
+      `${API_BASE}/api/members/me`,
+      updateData,
+      {
         headers: {
           Authorization: `Bearer ${token}`
         }
-      });
+      }
+    );
 
-      toast.success("Profile Updated Successfully 🚀");
+    setMember(res.data);
+    alert("Profile updated successfully");
 
-    } catch (error) {
-      console.error("Update error:", error.response?.data || error.message);
-      toast.error("Update failed");
-    }
-  };
+  } catch (err) {
+    console.error(err);
+    alert("Update failed");
+  }
+};
   
 
   if (loading) return <p>Loading profile...</p>;

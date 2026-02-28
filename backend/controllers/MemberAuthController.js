@@ -1,59 +1,58 @@
-const MemberAuth = require("../models/Member");
-const MemberProfile = require("../models/MemberProfile");
+const Member = require("../models/Member");
 const Team = require("../models/Team");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-// Input validation
-const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-const validatePassword = (password) => password && password.length >= 6;
+// Validation
+const validateEmail = (email) =>
+  /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
-// REGISTER
+const validatePassword = (password) =>
+  password && password.length >= 6;
+
+
+// ================= REGISTER =================
 exports.register = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // Validation
-    if (!email || !password) {
+    if (!email || !password)
       return res.status(400).json({ message: "Email and password required" });
-    }
 
-    if (!validateEmail(email)) {
+    if (!validateEmail(email))
       return res.status(400).json({ message: "Invalid email format" });
-    }
 
-    if (!validatePassword(password)) {
+    if (!validatePassword(password))
       return res.status(400).json({ message: "Password must be at least 6 characters" });
-    }
 
-    const existing = await MemberAuth.findOne({ email });
-    if (existing) {
-      return res.status(400).json({ message: "Email already registered" });
-    }
+    // 🔥 IMPORTANT: Only allow if admin already created team member
+    const teamMember = await Team.findOne({ email });
+
+    if (!teamMember)
+      return res.status(403).json({
+        message: "You are not authorized. Contact admin."
+      });
+
+    const existing = await Member.findOne({ email });
+
+    if (existing && existing.isRegistered)
+      return res.status(400).json({ message: "Account already activated" });
 
     const hashed = await bcrypt.hash(password, 10);
 
-    const authUser = await MemberAuth.create({
-      email,
-      password: hashed,
-      isRegistered: true
-    });
-
-    // Create empty profile
-    await MemberProfile.create({
-      authId: authUser._id
-    });
-
-    // Link to Team member if exists
-    const teamMember = await Team.findOne({ email });
-    if (teamMember) {
-      await MemberAuth.findByIdAndUpdate(authUser._id, {
+    const member = await Member.findOneAndUpdate(
+      { email },
+      {
+        password: hashed,
+        isRegistered: true,
         teamMemberId: teamMember._id
-      });
-      console.log("✅ Member linked to Team record:", teamMember._id);
-    }
+      },
+      { new: true, upsert: true }
+    );
 
-    res.status(201).json({ message: "Account created successfully" });
+    res.status(201).json({
+      message: "Account activated successfully"
+    });
 
   } catch (err) {
     console.error(err);
@@ -61,24 +60,21 @@ exports.register = async (req, res) => {
   }
 };
 
-// LOGIN
+
+// ================= LOGIN =================
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    if (!email || !password) {
-      return res.status(400).json({ message: "Email and password required" });
-    }
+    const user = await Member.findOne({ email });
 
-    const user = await MemberAuth.findOne({ email });
-    if (!user || !user.isRegistered) {
+    if (!user || !user.isRegistered)
       return res.status(401).json({ message: "Invalid credentials" });
-    }
 
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
+
+    if (!isMatch)
       return res.status(401).json({ message: "Invalid credentials" });
-    }
 
     const token = jwt.sign(
       { id: user._id },
@@ -88,8 +84,7 @@ exports.login = async (req, res) => {
 
     res.json({
       token,
-      memberId: user._id,
-      email: user.email
+      teamMemberId: user.teamMemberId
     });
 
   } catch (err) {

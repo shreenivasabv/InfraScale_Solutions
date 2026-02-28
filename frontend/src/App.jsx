@@ -19,6 +19,7 @@ import MemberLogin from "./pages/TeamMember/MemberLogin"; // Fixed typo in name
 import MemberRegister from "./pages/TeamMember/MemberRegister";
 import MemberDashboard from "./pages/TeamMember/MemberDashboard";
 import MemberProfile from "../src/pages/TeamMember/MemberProfile";
+import MemberDetailPage from "./pages/MemberDeatilPage";
 
 
 function AppContent() {
@@ -46,7 +47,7 @@ function AppContent() {
         <Route path="/services" element={<Services />} />
         <Route path="/team" element={<Team />} />
         <Route path="/services/:categoryName" element={<ServicesPage />} />
-        <Route path="/team/:id" element={<MemberProfile/>} />
+        <Route path="/team/:id" element={<MemberDetailPage />} />
         
         {/* --- MEMBER AUTHENTICATION ROUTES --- */}
         <Route path="/member-login" element={<MemberLogin />} />
@@ -83,7 +84,7 @@ function AppContent() {
         </Route>
 
         {/* Public detailed service by slug */}
-        <Route path="/services/details/:slug" element={<DetailedServicePage />} />
+        <Route path="/detailed-services/:slug" element={<DetailedServicePage />} />
       </Routes>
     </>
   );

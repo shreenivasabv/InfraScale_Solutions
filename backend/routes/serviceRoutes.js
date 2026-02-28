@@ -1,35 +1,26 @@
 const router = require("express").Router();
 const Service = require("../models/Service");
 const multer = require("multer");
-const path = require("path");
+const { storage } = require("../config/cloudinary"); //
 
-// 1. Setup Storage
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "uploads/");
-  },
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname));
-  }
-});
-
+// Use Cloudinary storage instead of diskStorage
 const upload = multer({ storage: storage });
 
-// 2. Updated POST Route with Category
+// 2. Updated POST Route with Cloudinary
 router.post("/", upload.single("image"), async (req, res) => {
   try {
     if (!req.file) {
       return res.status(400).json({ message: "Image is required" });
     }
 
-    // Extract 'category' from req.body alongside title and description
     const { title, description, category } = req.body;
 
     const newService = new Service({
       title: title,
       description: description,
-      category: category, // Save the category to the database
-      image: req.file.path.replace(/\\/g, "/") 
+      category: category,
+      // req.file.path is now the permanent Cloudinary HTTPS URL
+      image: req.file.path 
     });
 
     const savedService = await newService.save();
@@ -40,13 +31,10 @@ router.post("/", upload.single("image"), async (req, res) => {
   }
 });
 
-// 3. Updated GET Route to support filtering
-// Example usage: GET /api/services?category=Virtualization
+// 3. GET Route (Remains the same as your filtering logic is correct)
 router.get("/", async (req, res) => {
   try {
-    const { category } = req.query; // Check if a category is passed in the URL
-    
-    // Create a filter: if category exists, find by it; else, find everything
+    const { category } = req.query;
     const filter = category ? { category: category } : {};
     
     const services = await Service.find(filter);

@@ -80,7 +80,6 @@ function AdminServices() {
             <option value="Virtualization">Virtualization</option>
             {/* Value 'StorageBackup' matches the URL slug in your Navbar */}
             <option value="StorageBackup">Storage & Backup</option>
-            <option value="DevOps">DevOps</option>
           </select>
         </div>
 

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import "./MemberAuth.css";
 
 const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
@@ -30,25 +31,38 @@ function MemberLogin() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="email"
-        required
-        placeholder="Email"
-        value={form.email}
-        onChange={(e) => setForm({ ...form, email: e.target.value })}
-      />
+    <div className="auth-container">
+      <div className="auth-box">
+        <h2>Member Login</h2>
 
-      <input
-        type="password"
-        required
-        placeholder="Password"
-        value={form.password}
-        onChange={(e) => setForm({ ...form, password: e.target.value })}
-      />
+        <form onSubmit={handleSubmit}>
+          <input
+            type="email"
+            required
+            placeholder="Email"
+            value={form.email}
+            onChange={(e) => setForm({ ...form, email: e.target.value })}
+          />
 
-      <button type="submit">Login</button>
-    </form>
+          <input
+            type="password"
+            required
+            placeholder="Password"
+            value={form.password}
+            onChange={(e) => setForm({ ...form, password: e.target.value })}
+          />
+
+          <button type="submit">Login</button>
+        </form>
+
+        <p>
+          Don’t have an account?{" "}
+          <span onClick={() => navigate("/member-register")}>
+            Register
+          </span>
+        </p>
+      </div>
+    </div>
   );
 }
 

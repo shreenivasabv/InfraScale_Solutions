@@ -50,14 +50,16 @@ function MemberDetailPage() {
       <div className="member-detail-container">
         <div className="member-header">
           <img
-            src={
-              member.image
-                ? `${API_BASE}/uploads/${member.image}`
-                : "/placeholder.png"
-            }
-            alt={member.name}
-          />
-
+  src={
+    member.image && member.image.startsWith("http")
+      ? member.image
+      : "/placeholder.png"
+  }
+  alt={member.name}
+  onError={(e) => {
+    e.target.src = "/placeholder.png";
+  }}
+/>
           <div>
             <h1>{member.name}</h1>
             <p className="designation">{member.designation}</p>

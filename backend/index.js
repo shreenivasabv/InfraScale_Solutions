@@ -67,6 +67,9 @@ app.use("/api/team", require("./routes/teamRoutes"));
 app.use("/api/member-auth", require("./routes/MemberAuthRoutes"));
 app.use("/api/members", require("./routes/memberRoutes"));
 
+const cloudinary = require("./config/cloudinary");
+
+
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, '0.0.0.0', () => {

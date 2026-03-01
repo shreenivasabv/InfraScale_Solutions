@@ -40,7 +40,7 @@ function DetailedServicePage() {
 
   if (loading) {
     return (
-      <div className="service-detail-page">
+      <div className="service-page">
         <div className="loading">Loading...</div>
       </div>
     );
@@ -48,25 +48,40 @@ function DetailedServicePage() {
 
   if (error || !service) {
     return (
-      <div className="service-detail-page">
+      <div className="service-page">
         <div className="error">
           <h2>{error || "Service not found"}</h2>
-          <button onClick={() => navigate("/services")}>
-            Back to Services
-          </button>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="service-detail-page">
+    <div className="service-page">
 
-      <div className="service-detail-container">
-        <div className="service-header">
-          <h1>{service.title}</h1>
-        </div>
+      <div className="service-container">
 
+        <button
+          className="back-btn"
+          onClick={() => navigate("/services")}
+        >
+          ← Back to Services
+        </button>
+
+        {/* TITLE */}
+        <h1 className="service-title">{service.title}</h1>
+
+        {/* IMAGE */}
+        {service.architectureImage && (
+          <div className="service-image-wrapper">
+            <img
+              src={service.architectureImage}
+              alt="Service"
+            />
+          </div>
+        )}
+
+        {/* INTRODUCTION */}
         {service.heroDescription && (
           <section>
             <h2>Introduction</h2>
@@ -74,6 +89,7 @@ function DetailedServicePage() {
           </section>
         )}
 
+        {/* OVERVIEW */}
         {service.overview && (
           <section>
             <h2>Overview</h2>
@@ -81,9 +97,10 @@ function DetailedServicePage() {
           </section>
         )}
 
-        {service.technologies?.length > 0 && (
+        {/* TECHNOLOGIES */}
+        {Array.isArray(service.technologies) && service.technologies.length > 0 && (
           <section>
-            <h3>Technologies</h3>
+            <h2>Technologies</h2>
             <ul>
               {service.technologies.map((tech, i) => (
                 <li key={i}>{tech}</li>
@@ -92,9 +109,10 @@ function DetailedServicePage() {
           </section>
         )}
 
-        {service.benefits?.length > 0 && (
+        {/* BENEFITS */}
+        {Array.isArray(service.benefits) && service.benefits.length > 0 && (
           <section>
-            <h3>Benefits</h3>
+            <h2>Benefits</h2>
             <ul>
               {service.benefits.map((benefit, i) => (
                 <li key={i}>{benefit}</li>
@@ -103,9 +121,10 @@ function DetailedServicePage() {
           </section>
         )}
 
-        {service.useCases?.length > 0 && (
+        {/* USE CASES */}
+        {Array.isArray(service.useCases) && service.useCases.length > 0 && (
           <section>
-            <h3>Use Cases</h3>
+            <h2>Use Cases</h2>
             <ul>
               {service.useCases.map((useCase, i) => (
                 <li key={i}>{useCase}</li>
@@ -114,28 +133,6 @@ function DetailedServicePage() {
           </section>
         )}
 
-        {service.architectureImage && (
-          <section>
-            <h3>Architecture</h3>
-            <img
-              src={service.architectureImage}
-              alt="Architecture"
-              style={{ maxWidth: "100%" }}
-            />
-          </section>
-        )}
-
-        {service.faqs?.length > 0 && (
-          <section>
-            <h3>FAQs</h3>
-            {service.faqs.map((faq, i) => (
-              <div key={i}>
-                <strong>{faq.question}</strong>
-                <p>{faq.answer}</p>
-              </div>
-            ))}
-          </section>
-        )}
       </div>
     </div>
   );

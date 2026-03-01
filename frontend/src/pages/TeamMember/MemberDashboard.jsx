@@ -10,14 +10,56 @@ function MemberDashboard() {
   const [activeTab, setActiveTab] = useState("general");
   const [loading, setLoading] = useState(true);
 
-  // 🔹 FETCH PROFILE (JWT BASED)
+  // ✅ FETCH PROFILE (JWT BASED)
   useEffect(() => {
-  const fetchProfile = async () => {
+    const fetchProfile = async () => {
+      try {
+        const token = localStorage.getItem("token");
+
+        if (!token) {
+          setLoading(false);
+          return;
+        }
+
+        const res = await axios.get(
+          `${API_BASE}/api/members/me`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          }
+        );
+
+        setMember(res.data);
+      } catch (err) {
+        console.error("Profile fetch error:", err);
+        toast.error("Failed to load profile");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProfile();
+  }, []);
+
+  // ✅ UPDATE PROFILE
+  const handleUpdate = async () => {
     try {
       const token = localStorage.getItem("token");
 
-      const res = await axios.get(
+      const updateData = {
+        name: member.name,
+        designation: member.designation,
+        specialization: member.specialization,
+        experience: member.experience,
+        skills: member.skills || [],
+        projects: member.projects || [],
+        workExperience: member.workExperience || []
+      };
+
+      const res = await axios.put(
         `${API_BASE}/api/members/me`,
+        updateData,
         {
           headers: {
             Authorization: `Bearer ${token}`
@@ -26,56 +68,18 @@ function MemberDashboard() {
       );
 
       setMember(res.data);
-
+      toast.success("Profile updated successfully");
     } catch (err) {
-      console.error(err);
+      console.error("Update error:", err);
+      toast.error("Update failed");
     }
   };
 
-  fetchProfile();
-}, []);
-
-  useEffect(() => {
-    fetchProfileData();
-  }, []);
-
-  // 🔹 UPDATE PROFILE
-  const handleUpdate = async () => {
-  try {
-    const token = localStorage.getItem("token");
-
-    const updateData = {
-      name: member.name,
-      designation: member.designation,
-      specialization: member.specialization,
-      experience: member.experience,
-      skills: member.skills || [],
-      projects: member.projects || [],
-      workExperience: member.workExperience || []
-    };
-
-    const res = await axios.put(
-      `${API_BASE}/api/members/me`,
-      updateData,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      }
-    );
-
-    setMember(res.data);
-    alert("Profile updated successfully");
-
-  } catch (err) {
-    console.error(err);
-    alert("Update failed");
-  }
-};
-  
-
+  // ✅ LOADING STATE
   if (loading) return <p>Loading profile...</p>;
-  if (!member) return <p>Profile not found. Please log in again.</p>;
+
+  if (!member)
+    return <p>Profile not found. Please log in again.</p>;
 
   return (
     <div className="dashboard-wrapper">
@@ -164,7 +168,11 @@ function MemberDashboard() {
             <textarea
               rows="4"
               placeholder="Comma separated skills"
-              value={Array.isArray(member.skills) ? member.skills.join(", ") : ""}
+              value={
+                Array.isArray(member.skills)
+                  ? member.skills.join(", ")
+                  : ""
+              }
               onChange={(e) =>
                 setMember({
                   ...member,
@@ -182,7 +190,7 @@ function MemberDashboard() {
         {/* PROJECTS */}
         {activeTab === "projects" && (
           <div className="dynamic-section">
-            {member.projects && member.projects.map((proj, index) => (
+            {(member.projects || []).map((proj, index) => (
               <div key={index} className="dynamic-card">
                 <input
                   placeholder="Project Title"
@@ -225,7 +233,7 @@ function MemberDashboard() {
         {/* EXPERIENCE */}
         {activeTab === "experience" && (
           <div className="dynamic-section">
-            {member.workExperience && member.workExperience.map((exp, index) => (
+            {(member.workExperience || []).map((exp, index) => (
               <div key={index} className="dynamic-card">
                 <input
                   placeholder="Company"

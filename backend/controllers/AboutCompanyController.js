@@ -24,10 +24,10 @@ exports.updateAbout = async (req, res) => {
       about = await AboutCompany.create(req.body);
     } else {
       about = await AboutCompany.findOneAndUpdate(
-        {},
-        { $set: req.body },
-        { new: true }
-      );
+  {},
+  { $set: req.body },
+  { returnDocument: "after" }
+);
     }
 
     res.json(about);

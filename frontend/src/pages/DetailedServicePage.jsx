@@ -51,6 +51,9 @@ function DetailedServicePage() {
       <div className="service-page">
         <div className="error">
           <h2>{error || "Service not found"}</h2>
+          <button onClick={() => navigate("/services")}>
+            Back to Services
+          </button>
         </div>
       </div>
     );

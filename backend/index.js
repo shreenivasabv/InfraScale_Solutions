@@ -8,18 +8,22 @@ const fs = require("fs");
 const app = express();
 
 // --- MIDDLEWARE ---
-const allowedOrigins =
-  process.env.NODE_ENV === "production"
-    ? [
-        "https://infra-scale-solutions-68c5.vercel.app",
-        "https://infra-scale-solutions.vercel.app",
-        "http://localhost:5173"
-      ]
-    : ["http://localhost:5173"];
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://infra-scale-solutions-68c5.vercel.app",
+  "https://infra-scale-solutions.vercel.app"
+];
 
 app.use(
   cors({
-    origin: allowedOrigins,
+    origin: function (origin, callback) {
+      if (!origin) return callback(null, true); // allow non-browser tools (Postman)
+      if (allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
   })
 );
@@ -71,6 +75,7 @@ const cloudinary = require("./config/cloudinary");
 
 
 const PORT = process.env.PORT || 5000;
+console.log("NODE_ENV:", process.env.NODE_ENV);
 
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`🚀 Server Running on port ${PORT}`);

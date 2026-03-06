@@ -5,6 +5,7 @@ require("dotenv").config();
 const path = require("path");
 const fs = require("fs");
 
+
 const app = express();
 
 // --- MIDDLEWARE ---
@@ -69,10 +70,15 @@ app.use("/api/members", require("./routes/memberRoutes"));
 
 const cloudinary = require("./config/cloudinary");
 
+// Fix: Closed the if block and removed the duplicate PORT declaration
+if (process.env.NODE_ENV !== "test") {
+  const PORT = process.env.PORT || 5000;
+  console.log("NODE_ENV:", process.env.NODE_ENV);
 
-const PORT = process.env.PORT || 5000;
-console.log("NODE_ENV:", process.env.NODE_ENV);
+  app.listen(PORT, '0.0.0.0', () => {
+    console.log(`🚀 Server Running on port ${PORT}`);
+  });
+}
 
-app.listen(PORT, '0.0.0.0', () => {
-  console.log(`🚀 Server Running on port ${PORT}`);
-});
+// Export app for testing purposes
+module.exports = app;

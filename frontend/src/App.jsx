@@ -20,6 +20,7 @@ import MemberRegister from "./pages/TeamMember/MemberRegister";
 import MemberDashboard from "./pages/TeamMember/MemberDashboard";
 import MemberProfile from "../src/pages/TeamMember/MemberProfile";
 import MemberDetailPage from "./pages/MemberDeatilPage";
+import { Toaster } from "react-hot-toast";
 
 
 function AppContent() {
@@ -95,6 +96,7 @@ console.log(import.meta.env.VITE_API_URL);
 function App() {
   return (
     <Router>
+      <Toaster position="top-right" reverseOrder={false} />
       <AppContent />
     </Router>
   );

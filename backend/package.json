@@ -6,7 +6,7 @@
     "start": "node index.js",
     "dev": "nodemon index.js",
     "test": "jest --coverage",
-    "prepare": "husky install"
+    "prepare": "husky install || true"
   },
   "keywords": [],
   "author": "",

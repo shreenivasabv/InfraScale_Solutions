@@ -19,7 +19,6 @@ function AdminLayout() {
         <Link to="/admin/team">Manage Team</Link>
         <Link to="/admin/services">Manage Services</Link>
         <Link to="/admin/detailed-services">Detailed Services</Link>
-        <Link to="/admin/about">Manage About</Link>
 
         <button onClick={logout} className="logout-btn">
           Logout

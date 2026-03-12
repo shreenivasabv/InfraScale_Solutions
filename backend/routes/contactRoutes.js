@@ -28,8 +28,11 @@ router.post("/", async (req, res) => {
     const contact = new Contact(req.body);
     await contact.save();
 
-    // send emails
-    await sendContactEmails(req.body);
+    if (process.env.NODE_ENV !== "test") {
+      sendContactEmails(req.body).catch(err =>
+        console.error("Email error:", err)
+      );
+    }
 
     res.status(201).json({
       message: "Message sent successfully. Our engineers will contact you shortly."

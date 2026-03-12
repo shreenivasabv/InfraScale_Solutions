@@ -1,14 +1,16 @@
 const router = require("express").Router();
 const Contact = require("../models/Contact");
 const auth = require("../middleware/auth");
-
+const sendContactEmails = require("../services/emailService");
 // Validate contact data
 const validateContact = (data) => {
   const { name, email, message } = data;
   if (!name || !email || !message) {
     return "Name, email, and message are required";
   }
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  
+  if (!emailRegex.test(email)) {
     return "Invalid email format";
   }
   return null;
@@ -17,21 +19,25 @@ const validateContact = (data) => {
 // POST: /api/contact (Public)
 router.post("/", async (req, res) => {
   try {
-    console.log("📝 Contact form received:", JSON.stringify(req.body, null, 2));
-    
+
     const error = validateContact(req.body);
     if (error) {
-      console.error("❌ Validation failed:", error);
       return res.status(400).json({ message: error });
     }
 
     const contact = new Contact(req.body);
     await contact.save();
-    console.log("✅ Contact saved successfully");
-    res.status(201).json({ message: "Thank you! Your message has been received." });
+
+    // send emails
+    await sendContactEmails(req.body);
+
+    res.status(201).json({
+      message: "Message sent successfully. Our engineers will contact you shortly."
+    });
+
   } catch (err) {
-    console.error("❌ Error saving contact:", err);
-    res.status(500).json({ message: "Failed to save message", error: err.message });
+    console.error(err);
+    res.status(500).json({ message: "Failed to process request" });
   }
 });
 

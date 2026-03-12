@@ -34,8 +34,8 @@ function Team() {
           <p className="no-members">No team members available.</p>
         ) : (
           members.map((member) => {
-            // Safely handle features
             let features = [];
+
             if (Array.isArray(member.features)) {
               features = member.features;
             } else {
@@ -54,23 +54,23 @@ function Team() {
               >
                 <img
                   src={
-                    member.image && member.image.startsWith("http")
-                      ? member.image
+                    member.image
+                      ? `${API_BASE}/uploads/${member.image}`
                       : placeholder
                   }
                   alt={member.name}
                   className="team-image"
-                  onError={(e) => {
-                    e.target.src = placeholder;
-                  }}
+                  onError={(e) => (e.target.src = placeholder)}
                 />
 
                 <h3>{member.name}</h3>
                 <p className="designation">{member.designation}</p>
+
                 <p>
                   <strong>Specialization:</strong>{" "}
                   {member.specialization || "N/A"}
                 </p>
+
                 <p>
                   <strong>Experience:</strong>{" "}
                   {member.experience || 0} Years

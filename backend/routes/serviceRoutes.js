@@ -1,10 +1,6 @@
 const router = require("express").Router();
 const Service = require("../models/Service");
-const multer = require("multer");
-const { storage } = require("../config/cloudinary"); //
-
-// Use Cloudinary storage instead of diskStorage
-const upload = multer({ storage: storage });
+const upload = require("../middleware/cloudinaryUpload");
 
 // 2. Updated POST Route with Cloudinary
 router.post("/", upload.single("image"), async (req, res) => {
@@ -13,6 +9,8 @@ router.post("/", upload.single("image"), async (req, res) => {
       return res.status(400).json({ message: "Image is required" });
     }
 
+    console.log("FILE DATA:", req.file);
+
     const { title, description, category } = req.body;
 
     const newService = new Service({
@@ -20,7 +18,8 @@ router.post("/", upload.single("image"), async (req, res) => {
       description: description,
       category: category,
       // req.file.path is now the permanent Cloudinary HTTPS URL
-      image: req.file.path 
+      image: req.file.path,
+      cloudinary_id: req.file.filename
     });
 
     const savedService = await newService.save();
@@ -47,6 +46,10 @@ router.get("/", async (req, res) => {
 router.delete("/:id", async (req, res) => {
   try {
     await Service.findByIdAndDelete(req.params.id);
+
+    if (service.cloudinary_id) {
+      await cloudinary.uploader.destroy(service.cloudinary_id);
+    }
     res.json({ message: "Deleted" });
   } catch (err) {
     res.status(500).json({ message: "Delete failed" });

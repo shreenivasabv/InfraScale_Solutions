@@ -1,28 +1,89 @@
+/* ================================
+   PROFILE PAGE
+================================ */
+
 .profile-container {
   padding: 100px 10%;
-  background: #0b1220;
-  color: white;
+  background: linear-gradient(180deg,#0b1220,#0f172a);
+  color: #e2e8f0;
   min-height: 100vh;
+  font-family: "Segoe UI", Roboto, Arial, sans-serif;
 }
+
+/* ================================
+   PROFILE HEADER
+================================ */
 
 .profile-header {
   display: flex;
   gap: 40px;
   align-items: center;
   margin-bottom: 60px;
+
+  background: rgba(255,255,255,0.03);
+  backdrop-filter: blur(10px);
+
+  padding: 30px;
+  border-radius: 14px;
+
+  border: 1px solid rgba(255,255,255,0.08);
 }
+
+/* ================================
+   PROFILE IMAGE
+================================ */
 
 .profile-header img {
   width: 180px;
   height: 180px;
+
   border-radius: 16px;
   object-fit: cover;
-  border: 3px solid #1f2a44;
+
+  border: 3px solid #38bdf8;
+
+  box-shadow:
+    0 0 10px rgba(56,189,248,0.5),
+    0 0 30px rgba(56,189,248,0.3);
+
+  transition: transform 0.25s;
 }
+
+.profile-header img:hover {
+  transform: scale(1.05);
+}
+
+/* ================================
+   PROFILE TEXT
+================================ */
+
+.profile-header h2 {
+  font-size: 28px;
+  margin-bottom: 6px;
+}
+
+.profile-header p {
+  color: #94a3b8;
+}
+
+/* ================================
+   SECTIONS
+================================ */
 
 .profile-section {
   margin-bottom: 50px;
 }
+
+.profile-section h3 {
+  margin-bottom: 20px;
+  font-size: 22px;
+  border-bottom: 2px solid rgba(255,255,255,0.05);
+  padding-bottom: 10px;
+}
+
+/* ================================
+   SKILLS
+================================ */
 
 .skills-grid {
   display: flex;
@@ -31,22 +92,80 @@
 }
 
 .skill-badge {
-  background: #1f2a44;
+  background: rgba(56,189,248,0.15);
+  color: #38bdf8;
+
   padding: 8px 16px;
   border-radius: 20px;
+
   font-size: 14px;
+  font-weight: 500;
+
+  border: 1px solid rgba(56,189,248,0.2);
+
+  transition: 0.2s;
 }
+
+.skill-badge:hover {
+  background: rgba(56,189,248,0.25);
+}
+
+/* ================================
+   PROJECT CARDS
+================================ */
 
 .project-card,
 .work-card {
-  background: #131c2f;
-  padding: 20px;
+  background: rgba(255,255,255,0.04);
+
+  padding: 22px;
   border-radius: 12px;
+
   margin-bottom: 15px;
+
+  border: 1px solid rgba(255,255,255,0.08);
+
+  transition: all 0.25s;
 }
+
+.project-card:hover,
+.work-card:hover {
+  transform: translateY(-4px);
+
+  border-color: #38bdf8;
+
+  box-shadow: 0 0 25px rgba(56,189,248,0.15);
+}
+
+/* ================================
+   LOADING
+================================ */
 
 .loading {
   padding: 150px;
   text-align: center;
   color: white;
+  font-size: 20px;
+}
+
+/* ================================
+   MOBILE
+================================ */
+
+@media (max-width:768px){
+
+  .profile-container{
+    padding:80px 6%;
+  }
+
+  .profile-header{
+    flex-direction:column;
+    text-align:center;
+  }
+
+  .profile-header img{
+    width:140px;
+    height:140px;
+  }
+
 }

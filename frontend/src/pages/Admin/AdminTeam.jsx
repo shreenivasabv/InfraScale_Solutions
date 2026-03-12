@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
-import "./AdminTeam.css"; // Complete this import
-
+import "./AdminTeam.css";
 
 const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
 function AdminTeam() {
+
   const [members, setMembers] = useState([]);
+
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -15,119 +17,172 @@ function AdminTeam() {
     experience: "",
     features: ""
   });
+
   const [image, setImage] = useState(null);
 
-  // token used at request time directly via localStorage when needed
-
   const fetchMembers = async () => {
-  try {
-    // Note: Your backend GET route is public, but if you want to be safe, 
-    // you can add the header here too.
-    const res = await axios.get(`${API_BASE}/api/team`);
-    setMembers(res.data);
-  } catch (err) {
-    console.error(err);
-    toast.error("Failed to fetch members");
-  }
-};
+    try {
+      const res = await axios.get(`${API_BASE}/api/team`);
+      setMembers(res.data);
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to fetch members");
+    }
+  };
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchMembers();
   }, []);
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
-  if (!image) return toast.error("Please upload an image");
+    e.preventDefault();
 
-  const formData = new FormData();
-  formData.append("name", form.name);
-  formData.append("email", form.email);
-  formData.append("designation", form.designation);
-  formData.append("specialization", form.specialization);
-  formData.append("experience", form.experience);
-  // Important: features is sent as a JSON string
-  formData.append("features", JSON.stringify(form.features.split(",").map(f => f.trim())));
-  formData.append("image", image);
+    if (!image) return toast.error("Please upload an image");
 
-  try {
-    await axios.post(`${API_BASE}/api/team`, formData, {
-      headers: { 
-        // FIX: Added `Bearer ` prefix
-        Authorization: `Bearer ${localStorage.getItem("token")}`, 
-        "Content-Type": "multipart/form-data" 
-      }
-    });
+    const formData = new FormData();
 
-    toast.success("Member Added");
-    setForm({ name: "", email: "", designation: "", specialization: "", experience: "", features: "" });
-    setImage(null);
-    fetchMembers();
-  } catch (err) {
-    console.error(err);
-    toast.error(err.response?.data?.message || "Error adding member");
-  }
-};
+    formData.append("name", form.name);
+    formData.append("email", form.email);
+    formData.append("designation", form.designation);
+    formData.append("specialization", form.specialization);
+    formData.append("experience", form.experience);
 
-const deleteMember = async (id) => {
-  if (!window.confirm("Are you sure?")) return;
-  try {
-    await axios.delete(`${API_BASE}/api/team/${id}`, {
-      // FIX: Added `Bearer ` prefix
-      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
-    });
-    toast.success("Deleted");
-    fetchMembers();
-  } catch (err) {
-    console.error(err);
-    toast.error("Delete failed");
-  }
-};
+    formData.append(
+      "features",
+      JSON.stringify(form.features.split(",").map((f) => f.trim()))
+    );
+
+    formData.append("image", image);
+
+    try {
+
+      await axios.post(`${API_BASE}/api/team`, formData, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "Content-Type": "multipart/form-data"
+        }
+      });
+
+      toast.success("Member Added");
+
+      setForm({
+        name: "",
+        email: "",
+        designation: "",
+        specialization: "",
+        experience: "",
+        features: ""
+      });
+
+      setImage(null);
+
+      fetchMembers();
+
+    } catch (err) {
+
+      console.error(err);
+
+      toast.error(err.response?.data?.message || "Error adding member");
+
+    }
+  };
+
+  const deleteMember = async (id) => {
+
+    if (!window.confirm("Are you sure?")) return;
+
+    try {
+
+      await axios.delete(`${API_BASE}/api/team/${id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`
+        }
+      });
+
+      toast.success("Deleted");
+
+      fetchMembers();
+
+    } catch (err) {
+
+      console.error(err);
+
+      toast.error("Delete failed");
+
+    }
+  };
 
   return (
     <div className="admin-team-container">
+
       <h2>Manage Team</h2>
 
       <form onSubmit={handleSubmit}>
-        <input 
-          placeholder="Name" 
+
+        <input
+          placeholder="Name"
           value={form.name}
-          onChange={(e) => setForm({ ...form, name: e.target.value })} 
-          required 
+          onChange={(e) =>
+            setForm({ ...form, name: e.target.value })
+          }
+          required
         />
-        <input 
-            type="email"
-            placeholder="Email Address" 
-            value={form.email}
-           onChange={(e) => setForm({ ...form, email: e.target.value })} 
-  required 
-/>
-        <input 
-          placeholder="Designation" 
+
+        <input
+          type="email"
+          placeholder="Email"
+          value={form.email}
+          onChange={(e) =>
+            setForm({ ...form, email: e.target.value })
+          }
+          required
+        />
+
+        <input
+          placeholder="Designation"
           value={form.designation}
-          onChange={(e) => setForm({ ...form, designation: e.target.value })} 
-          required 
+          onChange={(e) =>
+            setForm({ ...form, designation: e.target.value })
+          }
+          required
         />
-        <input 
-          placeholder="Specialization" 
+
+        <input
+          placeholder="Specialization"
           value={form.specialization}
-          onChange={(e) => setForm({ ...form, specialization: e.target.value })} 
+          onChange={(e) =>
+            setForm({ ...form, specialization: e.target.value })
+          }
         />
-        <input 
-          placeholder="Experience" 
+
+        <input
+          placeholder="Experience"
           value={form.experience}
-          onChange={(e) => setForm({ ...form, experience: e.target.value })} 
+          onChange={(e) =>
+            setForm({ ...form, experience: e.target.value })
+          }
         />
-        <input 
-          placeholder="Features (comma separated)" 
+
+        <input
+          placeholder="Skills (comma separated)"
           value={form.features}
-          onChange={(e) => setForm({ ...form, features: e.target.value })} 
+          onChange={(e) =>
+            setForm({ ...form, features: e.target.value })
+          }
         />
-        <input type="file" onChange={(e) => setImage(e.target.files[0])} required />
+
+        <input
+          type="file"
+          onChange={(e) => setImage(e.target.files[0])}
+          required
+        />
+
         <button type="submit">Add Member</button>
+
       </form>
 
       <table>
+
         <thead>
           <tr>
             <th>Name</th>
@@ -135,20 +190,27 @@ const deleteMember = async (id) => {
             <th>Actions</th>
           </tr>
         </thead>
+
         <tbody>
           {members.map((member) => (
             <tr key={member._id}>
               <td>{member.name}</td>
               <td>{member.designation}</td>
+
               <td>
-                <button className="delete-btn" onClick={() => deleteMember(member._id)}>
+                <button
+                  className="delete-btn"
+                  onClick={() => deleteMember(member._id)}
+                >
                   Delete
                 </button>
               </td>
             </tr>
           ))}
         </tbody>
+
       </table>
+
     </div>
   );
 }

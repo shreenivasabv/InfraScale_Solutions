@@ -2,11 +2,8 @@ const express = require("express");
 const router = express.Router();
 const Team = require("../models/Team");
 const auth = require("../middleware/auth");
-const multer = require("multer");
-const { storage } = require("../config/cloudinary"); //
 
-// Use Cloudinary storage instead of local diskStorage
-const upload = multer({ storage });
+const upload = require("../middleware/cloudinaryUpload");
 
 // 🔹 Get All Team Members (Public)
 router.get("/", async (req, res) => {
@@ -40,9 +37,11 @@ router.post("/", auth, upload.single("image"), async (req, res) => {
 
     const existing = await Team.findOne({ email });
     if (existing) return res.status(400).json({ message: "Member already exists" });
+    console.log("FILE DATA:", req.file);
 
     // req.file.path is now the permanent Cloudinary HTTPS URL
-    const imageUrl = req.file ? req.file.path : "";
+   const imageUrl = req.file?.path || req.file?.secure_url || "";
+    const cloudinaryId = req.file ? req.file.filename : "";
 
     const member = await Team.create({
       name,
@@ -51,7 +50,8 @@ router.post("/", auth, upload.single("image"), async (req, res) => {
       specialization,
       experience: Number(experience),
       features: Array.isArray(features) ? features : JSON.parse(features || "[]"),
-      image: imageUrl // Save the full URL to MongoDB
+      image: imageUrl, // Save the full URL to MongoDB
+      cloudinaryId
     });
 
     res.status(201).json(member);
@@ -63,23 +63,39 @@ router.post("/", auth, upload.single("image"), async (req, res) => {
 // 🔹 Admin Update Team Member
 router.put("/:id", auth, upload.single("image"), async (req, res) => {
   try {
-    const { name, email, designation, specialization, experience, features } = req.body;
 
-    const updateData = { name, email, designation, specialization, experience: Number(experience) };
-    
-    if (features) {
-      updateData.features = Array.isArray(features) ? features : JSON.parse(features || "[]");
-    }
-
-    // If a new file is uploaded, update the Cloudinary URL
-    if (req.file) {
-      updateData.image = req.file.path;
-    }
-
-    const member = await Team.findByIdAndUpdate(req.params.id, updateData, { new: true });
+    const member = await Team.findById(req.params.id);
     if (!member) return res.status(404).json({ message: "Member not found" });
-    
-    res.json(member);
+
+    const updateData = {
+      name: req.body.name,
+      email: req.body.email,
+      designation: req.body.designation,
+      specialization: req.body.specialization,
+      experience: Number(req.body.experience)
+    };
+
+    if (req.body.features) {
+      updateData.features = Array.isArray(req.body.features)
+        ? req.body.features
+        : JSON.parse(req.body.features);
+    }
+
+    if (req.file) {
+
+      // delete old image
+      if (member.cloudinaryId) {
+        await cloudinary.uploader.destroy(member.cloudinaryId);
+      }
+
+      updateData.image = req.file.path;
+      updateData.cloudinaryId = req.file.filename;
+    }
+
+    const updated = await Team.findByIdAndUpdate(req.params.id, updateData, { new: true });
+
+    res.json(updated);
+
   } catch (err) {
     res.status(500).json({ message: "Error updating member", error: err.message });
   }

@@ -87,17 +87,18 @@ function MemberDashboard() {
       <div className="profile-header">
         <div className="profile-left">
           <img
-            src={
-              member.image
-                ? `${API_BASE}/uploads/${member.image}`
-                : "/default-profile.png"
-            }
-            alt="profile"
-            className="profile-image"
-            onError={(e) => {
-              e.target.src = "/default-profile.png";
-            }}
-          />
+  src={
+    member.image
+      ? `${API_BASE}/uploads/${member.image}`
+      : "/default-profile.png"
+  }
+  alt="profile"
+  className="profile-image"
+  onError={(e) => {
+    e.currentTarget.onerror = null;
+    e.currentTarget.src = "/default-profile.png";
+  }}
+/>
           <div>
             <h2>{member.name || "Your Name"}</h2>
             <p>{member.designation || "Designation"}</p>

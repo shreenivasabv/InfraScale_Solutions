@@ -67,6 +67,7 @@ app.use("/api/about", require("./routes/aboutRoutes"));
 app.use("/api/team", require("./routes/teamRoutes"));
 app.use("/api/member-auth", require("./routes/MemberAuthRoutes"));
 app.use("/api/members", require("./routes/memberRoutes"));
+app.use("/api/partners", require("./routes/partnerRoutes"));
 
 const cloudinary = require("./config/cloudinary");
 

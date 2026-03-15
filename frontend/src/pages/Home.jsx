@@ -8,6 +8,7 @@ import Insight from "../components/Insight/Insight";
 import Contact from "../components/Contact/Contact";
 import Footer from "../components/Footer/Footer";
 import { Toaster } from 'react-hot-toast';
+import OurPartners from "../components/OurPartners/OurPartners";
 
 function Home() {
   return (
@@ -20,6 +21,7 @@ function Home() {
       <Process />
       <TechStack />
       <Insight />
+      <OurPartners />
       <Contact />
       <Footer />
     </>

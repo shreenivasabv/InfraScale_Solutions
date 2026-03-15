@@ -117,3 +117,96 @@
 .admin-dropdown a:hover {
   color: #007bff !important; /* Changes to blue when hovering the text */
 }
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 40px;
+  background-color: #0b1120; /* Matches your index.css background */
+  position: fixed; /* Keeps header at the top */
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.company-logo {
+  height: 50px; /* Adjust height based on your logo design */
+  width: auto;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.company-logo:hover {
+  transform: scale(1.05);
+}
+
+/* Ensure content doesn't get hidden behind fixed navbar */
+body {
+  padding-top: 70px; 
+}
+
+/* ... keep your existing nav-links and dropdown CSS below ... */
+
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 40px;
+  background: transparent; /* Or the semi-transparent dark from your image */
+  position: absolute; /* Set to fixed if you want it to follow scroll */
+  width: 100%;
+  top: 0;
+  z-index: 1000;
+}
+
+.logo-link {
+  display: flex;
+  flex-direction: column; /* Stacks text under logo */
+  align-items: center;
+  text-decoration: none;
+}
+
+.company-logo {
+  height: 60px; /* Adjust size to match your reference image */
+  width: auto;
+  object-fit: contain;
+}
+
+.logo-text {
+  color: #00a3ff; /* Matching the blue accent in your reference */
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin-top: 5px;
+  text-transform: uppercase;
+  font-family: 'Arial', sans-serif;
+}
+
+/* Ensure nav links are styled like the image */
+.nav-links {
+  display: flex;
+  list-style: none;
+  gap: 30px;
+}
+
+.nav-links li a, 
+.dropdown span {
+  color: white;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+.nav-links li a:hover {
+  color: #00a3ff;
+}

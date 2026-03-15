@@ -1,37 +1,47 @@
 import "./Hero.css";
 
 function Hero() {
+  const scrollToSection = (id) => {
+    const section = document.getElementById(id);
+    if (!section) return;
+
+    const headerOffset = 110;
+    const elementPosition = section.getBoundingClientRect().top;
+    const offsetPosition = elementPosition + window.scrollY - headerOffset;
+
+    window.scrollTo({
+      top: offsetPosition,
+      behavior: "smooth",
+    });
+  };
 
   return (
-    <section className="hero">
-      <img 
-        src="/img.jpeg" 
-        alt="InfraScale Solutions - Infrastructure Engineering"
-        className="hero-image"
-      />
+    <section id="home" className="hero">
+      <div className="hero-overlay">
+        <div className="hero-content">
+          <h1>We Don’t Just Manage IT. <br /> We Engineer Resilience.</h1>
 
-      <div className="hero-content">
-        <h1>
-          We Don’t Just Manage IT. We Engineer Resilience.
-        </h1>
+          <p className="hero-text">
+            Most IT firms provide support. We provide architectural mastery.
+            From the physical rack-and-stack to complex multi-cloud migrations,
+            our elite team of certified engineers builds the bedrock your business grows on.
+          </p>
 
-        <p>
-          Most IT firms provide support. We provide architectural mastery.
-          From rack-and-stack to complex multi-cloud migrations,
-          our elite team builds the bedrock your business grows on.
-        </p>
-
-        <div className="hero-buttons">
-          <a href="#contact">
-            <button className="primary-btn">
-              Get a Free Infrastructure Health Check
+          <div className="hero-buttons">
+            <button 
+              className="btn btn-primary" 
+              onClick={() => scrollToSection("contact")}
+            >
+              Get a Infrastructure Health Check
             </button>
-          </a>
-          <a href="#techstack">
-            <button className="secondary-btn">
+
+            <button 
+              className="btn btn-outline" 
+              onClick={() => scrollToSection("tech")}
+            >
               Our Tech Stack
             </button>
-          </a>
+          </div>
         </div>
       </div>
     </section>

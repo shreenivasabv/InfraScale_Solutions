@@ -7,7 +7,7 @@ function Difference() {
 
       <div className="difference-grid">
         <div className="card">
-          <h3>The Power of 5</h3>
+          <h3>No Sales Intervention</h3>
           <p>Direct access to senior engineers. No sales layers.</p>
         </div>
 

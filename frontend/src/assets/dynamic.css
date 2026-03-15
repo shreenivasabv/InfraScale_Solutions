@@ -1,0 +1,113 @@
+/* Arrow Styles */
+.arrow {
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #1e293b 60%, #64748b 100%);
+  box-shadow: 0 2px 8px rgba(30,41,59,0.15);
+  position: relative;
+  transition: background 0.3s, box-shadow 0.3s;
+}
+.arrow:hover {
+  background: linear-gradient(135deg, #64748b 60%, #1e293b 100%);
+  box-shadow: 0 4px 16px rgba(30,41,59,0.25);
+}
+.arrow:before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 12px;
+  height: 12px;
+  border: solid #fff;
+  border-width: 0 4px 4px 0;
+  display: inline-block;
+  padding: 3px;
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+.arrow.up:before {
+  transform: translate(-50%, -50%) rotate(-135deg);
+}
+.arrow.down:before {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+.arrow.left:before {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+.arrow.right:before {
+  transform: translate(-50%, -50%) rotate(135deg);
+}
+
+/* Scroll Reveal Animation */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  animation: revealFadeIn 1s forwards;
+}
+
+@keyframes revealFadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Professional Global Styles */
+body {
+  background: linear-gradient(120deg, #0b1120 70%, #1e293b 100%);
+  color: #e2e8f0;
+}
+
+section, .card, .page-content {
+  border-radius: 16px;
+  background: rgba(30,41,59,0.7);
+  box-shadow: 0 2px 16px rgba(30,41,59,0.12);
+  margin-bottom: 32px;
+  padding: 32px 24px;
+}
+
+h1, h2, h3, h4 {
+  color: #38bdf8;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+button, .btn {
+  background: linear-gradient(90deg, #38bdf8 60%, #0ea5e9 100%);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(30,41,59,0.15);
+  transition: background 0.3s, box-shadow 0.3s;
+}
+button:hover, .btn:hover {
+  background: linear-gradient(90deg, #0ea5e9 60%, #38bdf8 100%);
+  box-shadow: 0 4px 16px rgba(30,41,59,0.25);
+}
+
+/* Scroll reveal for all sections */
+section, .reveal {
+  animation: revealFadeIn 1s forwards;
+  opacity: 0;
+  transform: translateY(40px);
+}
+section.visible, .reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  section, .card, .page-content {
+    padding: 16px 8px;
+    margin-bottom: 16px;
+  }
+  h1 {
+    font-size: 2rem;
+  }
+}

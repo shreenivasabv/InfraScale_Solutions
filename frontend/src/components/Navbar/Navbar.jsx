@@ -20,14 +20,16 @@ function Navbar() {
 
   return (
     <nav className="navbar">
+      {/* Updated Logo Section to match reference structure */}
       <div className="logo">
-        <Link to="/">INFRASCALE</Link>
+        <Link to="/" className="logo-link">
+          <img src="/company_logo.png" alt="Logo" className="company-logo" />
+          <span className="logo-text">INFRASCALE IT SOLUTIONS</span>
+        </Link>
       </div>
 
       <ul className={`nav-links ${showMobileMenu ? "active" : ""}`}>
-        <li>
-          <Link to="/" onClick={() => setShowMobileMenu(false)}>Home</Link>
-        </li>
+        <li><Link to="/" onClick={() => setShowMobileMenu(false)}>Home</Link></li>
 
         <li 
           className="dropdown" 
@@ -48,12 +50,9 @@ function Navbar() {
           onMouseEnter={() => handleMouseEnter("solutions")} 
           onMouseLeave={handleMouseLeave}
         >
-          <span>Our Expertise ▾</span>
+          <span>Our Services ▾</span>
           {openMenu === "solutions" && (
             <ul className="dropdown-menu">
-              {/* IMPORTANT: These 'to' paths should match the 
-                  'category' strings you save in your database.
-              */}
               <li>
                 <Link to="/services/Virtualization" onClick={() => setShowMobileMenu(false)}>
                   Virtualization
@@ -77,15 +76,12 @@ function Navbar() {
         onMouseLeave={handleMouseLeave}
       >
         <div className="three-dot">⋮</div>
-        
         {openMenu === "admin" && (
           <div className="admin-dropdown">
             {isLoggedIn ? (
               <>
                 <Link to="/member-dashboard">Dashboard</Link>
-                <button onClick={handleLogout} style={{ cursor: "pointer" }}>
-                  Logout
-                </button>
+                <button onClick={handleLogout} style={{ cursor: "pointer" }}>Logout</button>
               </>
             ) : (
               <Link to="/admin-login">Admin Login</Link>

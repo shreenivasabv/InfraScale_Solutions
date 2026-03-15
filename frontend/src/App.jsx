@@ -10,23 +10,21 @@ import AdminDashboard from "./pages/Admin/AdminDashboard";
 import AdminTeam from "./pages/Admin/AdminTeam";
 import AdminServices from "./pages/Admin/AdminServices";
 import AdminDetailedServices from "./pages/Admin/AdminDetailedServices";
+import ManagePartners from "./pages/Admin/ManagePartners";
 import DetailedServicePage from "./pages/DetailedServicePage";
 import AdminAbout from "./pages/Admin/AdminAbout";
-import ProtectedRoute from "./components/ProtectedRoute";
+import ProtectedRoute from "./components/ProtectedRoute"; 
 import ServicesPage from "./pages/ServicesPage";
 import Navbar from "./components/Navbar/Navbar"; 
-import MemberLogin from "./pages/TeamMember/MemberLogin"; // Fixed typo in name
+import MemberLogin from "./pages/TeamMember/MemberLogin";
 import MemberRegister from "./pages/TeamMember/MemberRegister";
 import MemberDashboard from "./pages/TeamMember/MemberDashboard";
-import MemberProfile from "../src/pages/TeamMember/MemberProfile";
 import MemberDetailPage from "./pages/MemberDeatilPage";
-
 
 function AppContent() {
   const location = useLocation();
 
   // Logic to hide Navbar on Admin, Login, and Dashboard routes
-  // This ensures the Member Dashboard feels like a private workstation
   const hideNavbar = 
     location.pathname.startsWith("/admin") || 
     location.pathname === "/admin-login" ||
@@ -36,7 +34,6 @@ function AppContent() {
 
   return (
     <>
-      {/* Navbar renders only for public website pages */}
       {!hideNavbar && <Navbar />}
 
       <Routes>
@@ -48,6 +45,7 @@ function AppContent() {
         <Route path="/team" element={<Team />} />
         <Route path="/services/:categoryName" element={<ServicesPage />} />
         <Route path="/team/:id" element={<MemberDetailPage />} />
+        <Route path="/detailed-services/:slug" element={<DetailedServicePage />} />
         
         {/* --- MEMBER AUTHENTICATION ROUTES --- */}
         <Route path="/member-login" element={<MemberLogin />} />
@@ -75,22 +73,18 @@ function AppContent() {
             </ProtectedRoute>
           }
         >
-          {/* These render inside AdminLayout's <Outlet /> */}
+          {/* Sub-routes render inside AdminLayout's <Outlet /> */}
           <Route path="dashboard" element={<AdminDashboard />} />
           <Route path="team" element={<AdminTeam />} />
           <Route path="services" element={<AdminServices />} />
           <Route path="detailed-services" element={<AdminDetailedServices />} />
           <Route path="about" element={<AdminAbout />} />
+          <Route path="partners" element={<ManagePartners />} /> 
         </Route>
-
-        {/* Public detailed service by slug */}
-        <Route path="/detailed-services/:slug" element={<DetailedServicePage />} />
       </Routes>
     </>
   );
 }
-console.log(import.meta.env.VITE_API_URL);
-
 
 function App() {
   return (

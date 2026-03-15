@@ -1,3 +1,6 @@
+/* index.css */
+@import url('./assets/dynamic.css');
+
 * {
   margin: 0;
   padding: 0;
@@ -9,6 +12,7 @@ html, body {
   overflow-x: hidden;
   background-color: #0b1120;
   font-family: Arial, Helvetica, sans-serif;
+  color: #ffffff;
 }
 
 #root {
@@ -17,8 +21,4 @@ html, body {
 
 html {
   scroll-behavior: smooth;
-}
-
-.page-content {
-  padding-top: 80px; /* Same height as navbar */
 }

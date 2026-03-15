@@ -4,7 +4,10 @@ const cors = require("cors");
 require("dotenv").config();
 const path = require("path");
 const fs = require("fs");
+const bcrypt = require("bcryptjs");
 
+// Models
+const Admin = require("./models/Admin");
 
 const app = express();
 
@@ -22,8 +25,6 @@ app.use(cors({
   allowedHeaders: ["Content-Type", "Authorization"]
 }));
 
-
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -34,29 +35,36 @@ if (!fs.existsSync("./uploads")) {
   fs.mkdirSync("./uploads");
 }
 
-// --- DATABASE ---
-// Allow a local fallback for development when MONGO_URI is not set.
-const mongoUri = process.env.MONGO_URI || "mongodb://127.0.0.1:27017/infrascale";
-mongoose.connect(mongoUri)
-  .then(() => console.log("✅ MongoDB Connected Successfully ->", mongoUri))
-  .catch((err) => console.error("❌ MongoDB Error:", err && err.message ? err.message : err));
-
-// --- ADMIN SEED ---
-const Admin = require("./models/Admin");
-const bcrypt = require("bcryptjs");
-
+// --- ADMIN SEED FUNCTION ---
 async function createDefaultAdmin() {
-  const existing = await Admin.findOne({ email: "admin@infrascale.com" });
-  if (!existing) {
-    const hashed = await bcrypt.hash("admin123", 10);
-    await Admin.create({
-      email: "admin@infrascale.com",
-      password: hashed
-    });
-    console.log("✅ Default Admin Created");
+  try {
+    const existing = await Admin.findOne({ email: "admin@infrascale.com" });
+    if (!existing) {
+      const hashed = await bcrypt.hash("admin123", 10);
+      await Admin.create({
+        email: "admin@infrascale.com",
+        password: hashed
+      });
+      console.log("✅ Default Admin Created");
+    }
+  } catch (err) {
+    console.error("❌ Admin Seeding Error:", err.message);
   }
 }
-createDefaultAdmin();
+
+// --- DATABASE CONNECTION ---
+const mongoUri = process.env.MONGO_URI || "mongodb://127.0.0.1:27017/infrascale";
+
+mongoose.connect(mongoUri)
+  .then(async () => {
+    console.log("✅ MongoDB Connected Successfully");
+    
+    // Fix: Only seed admin if NOT in test mode to prevent CI/CD "Topology Closed" errors
+    if (process.env.NODE_ENV !== "test") {
+      await createDefaultAdmin();
+    }
+  })
+  .catch((err) => console.error("❌ MongoDB Error:", err && err.message ? err.message : err));
 
 // --- ROUTES ---
 app.use("/api/admin", require("./routes/adminRoutes"));
@@ -69,15 +77,15 @@ app.use("/api/member-auth", require("./routes/MemberAuthRoutes"));
 app.use("/api/members", require("./routes/memberRoutes"));
 app.use("/api/partners", require("./routes/partnerRoutes"));
 
-const cloudinary = require("./config/cloudinary");
+// Cloudinary config (Optional: ensure this file exists or remove if unused)
+// const cloudinary = require("./config/cloudinary");
 
-// Fix: Closed the if block and removed the duplicate PORT declaration
+// --- SERVER START ---
 if (process.env.NODE_ENV !== "test") {
   const PORT = process.env.PORT || 5000;
-  console.log("NODE_ENV:", process.env.NODE_ENV);
-
   app.listen(PORT, '0.0.0.0', () => {
     console.log(`🚀 Server Running on port ${PORT}`);
+    console.log("NODE_ENV:", process.env.NODE_ENV);
   });
 }
 

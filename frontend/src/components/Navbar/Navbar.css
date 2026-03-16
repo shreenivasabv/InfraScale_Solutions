@@ -1,212 +1,168 @@
-.navbar {
-  background-color: #0f172a;
-  padding: 0 40px; /* Adjusted padding for better edge alignment */
-  display: flex;
-  justify-content: space-between; 
-  align-items: center;
-  color: white;
-  height: 80px;
-  position: sticky;
-  top: 0;
-  z-index: 1000;
+/* ---------------- GLOBAL RESET ---------------- */
+
+html, body {
+  margin: 0;
+  padding: 0;
 }
 
-.logo a {
-  text-decoration: none;
-  color: white;
-  font-weight: bold;
-  font-size: 22px;
-  letter-spacing: 2px;
+body {
+  padding-top: 80px;
 }
+
+/* ---------------- NAVBAR ---------------- */
+
+.navbar {
+  display: flex;
+  align-items: center;
+  padding: 0 5%;
+  height: 80px;
+  background-color: #0b1120;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+/* ---------------- LOGO ---------------- */
+
+.logo {
+  display: flex;
+}
+
+.logo-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+}
+
+.company-logo {
+  height: 50px;
+}
+
+.logo-text {
+  color: #00a3ff;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin-top: 2px;
+}
+
+/* ---------------- NAV LINKS ---------------- */
 
 .nav-links {
-  list-style: none;
   display: flex;
+  list-style: none;
   gap: 30px;
+  margin-left: auto;
+  padding: 0;
+}
+
+/* IMPORTANT: makes dropdown align correctly */
+.nav-links li {
+  position: relative;
+}
+
+.nav-links li a,
+.dropdown span {
+  color: white;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.nav-links li a:hover {
+  color: #00a3ff;
+}
+
+/* ---------------- DROPDOWN MENU ---------------- */
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: #1f2937;
+  min-width: 180px;
+  padding: 10px 0;
+  border-radius: 4px;
+  list-style: none;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+}
+
+.dropdown-menu li a {
+  display: block;
+  padding: 10px 20px;
+  color: white;
+}
+
+.dropdown-menu li:hover {
+  background: #374151;
+}
+
+/* ---------------- RIGHT ACTIONS ---------------- */
+
+.navbar-actions {
+  display: flex;
   align-items: center;
-  margin-left: auto; /* This pushes the links to the right */
-  margin-right: 30px; /* This creates space between the links and the dots */
+  gap: 12px;
+  margin-left: 20px;
+}
+
+/* ---------------- THREE DOT MENU ---------------- */
+
+.three-dot-container {
+  position: relative;
 }
 
 .three-dot {
-  font-size: 30px; /* Slightly larger for better visibility */
+  color: #00a3ff;
+  font-size: 22px;
   cursor: pointer;
-  color: white;
-  display: flex;
-  align-items: center;
-  padding: 10px;
-  user-select: none;
+  padding: 4px;
 }
 
 .three-dot:hover {
   color: #2563eb;
 }
 
-/* Dropdown styling */
-.nav-links li {
-  position: relative;
-}
+/* ---------------- ADMIN DROPDOWN ---------------- */
 
-.nav-links a {
-  text-decoration: none;
-  color: white;
-  font-size: 16px;
-}
-
-.dropdown-menu {
-  position: absolute;
-  top: 100%;
-  right: 0; /* Align dropdown to the right of the parent link */
-  background-color: #1f2937;
-  min-width: 180px;
-  border-radius: 4px;
-  padding: 10px 0;
-  list-style: none;
-}
-
-/* Ensure sub-links look good */
-.dropdown-menu li a {
-  padding: 10px 20px;
-  display: block;
-}
-
-.dropdown-menu li:hover {
-  background-color: #374151;
-}
-
-/* Container to provide a bridge between the dots and the menu so it doesn't disappear */
-.three-dot-container {
-  position: relative;
-  display: flex;
-  align-items: center;
-  height: 100%; /* Ensures the hover area covers the full navbar height */
-  padding: 0 15px;
-  cursor: pointer;
-}
-
-.three-dot {
-  color: #007bff; /* The blue color from your image */
-  font-size: 24px;
-  font-weight: bold;
-}
-
-/* The White Dropdown Box */
 .admin-dropdown {
   position: absolute;
-  top: 50px;           /* Adjust this so it lines up with your other dropdowns */
-  right: 0;            /* Aligns the right edge of the box with the dots */
-  background-color: #ffffff;
-  min-width: 140px;
-  padding: 15px;
+  top: 35px;
+  right: 0;
+  background: white;
+  min-width: 120px;
+  padding: 10px;
   border-radius: 4px;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Soft shadow for the floating effect */
-  z-index: 1000;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }
 
 .admin-dropdown a {
-  color: #333 !important; /* Dark text for the white background */
   text-decoration: none;
-  font-size: 14px;
-  font-weight: 500;
-  white-space: nowrap;
+  color: #333;
+  display: block;
+  text-align: center;
 }
 
-.admin-dropdown a:hover {
-  color: #007bff !important; /* Changes to blue when hovering the text */
-}
+/* ---------------- THEME TOGGLE ---------------- */
 
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 40px;
-  background-color: #0b1120; /* Matches your index.css background */
-  position: fixed; /* Keeps header at the top */
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 1000;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.logo {
-  display: flex;
-  align-items: center;
-}
-
-.company-logo {
-  height: 50px; /* Adjust height based on your logo design */
-  width: auto;
-  object-fit: contain;
-  transition: transform 0.3s ease;
-}
-
-.company-logo:hover {
-  transform: scale(1.05);
-}
-
-/* Ensure content doesn't get hidden behind fixed navbar */
-body {
-  padding-top: 70px; 
-}
-
-/* ... keep your existing nav-links and dropdown CSS below ... */
-
-
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 40px;
-  background: transparent; /* Or the semi-transparent dark from your image */
-  position: absolute; /* Set to fixed if you want it to follow scroll */
-  width: 100%;
-  top: 0;
-  z-index: 1000;
-}
-
-.logo-link {
-  display: flex;
-  flex-direction: column; /* Stacks text under logo */
-  align-items: center;
-  text-decoration: none;
-}
-
-.company-logo {
-  height: 60px; /* Adjust size to match your reference image */
-  width: auto;
-  object-fit: contain;
-}
-
-.logo-text {
-  color: #00a3ff; /* Matching the blue accent in your reference */
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  margin-top: 5px;
-  text-transform: uppercase;
-  font-family: 'Arial', sans-serif;
-}
-
-/* Ensure nav links are styled like the image */
-.nav-links {
-  display: flex;
-  list-style: none;
-  gap: 30px;
-}
-
-.nav-links li a, 
-.dropdown span {
-  color: white;
-  text-decoration: none;
-  font-size: 14px;
-  font-weight: 500;
-  transition: color 0.3s;
-}
-
-.nav-links li a:hover {
+.theme-toggle {
+  background: transparent;
+  border: none;
   color: #00a3ff;
+  font-size: 18px;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  transition: background 0.2s ease, opacity 0.2s ease;
+}
+
+/* Professional subtle hover */
+.theme-toggle:hover {
+  background: rgba(255,255,255,0.08);
 }

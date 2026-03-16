@@ -33,16 +33,3 @@ jobs:
         run: |
           cd backend
           npm test
-
-  docker-build:
-
-    runs-on: ubuntu-latest
-    needs: test
-
-    steps:
-
-      - name: Checkout Code
-        uses: actions/checkout@v3
-
-      - name: Build Docker Containers
-        run: docker compose build

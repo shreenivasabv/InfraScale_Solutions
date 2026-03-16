@@ -78,3 +78,7 @@
 .add-service-btn:hover {
   background-color: #1d4ed8;
 }
+.add-service-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

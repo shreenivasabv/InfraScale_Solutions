@@ -3,11 +3,9 @@
   position: relative;
   height: 100vh;
   width: 100%;
-  /* Use the absolute path for public folder assets */
-  background: url('/hero-bg.png') no-repeat center center/cover;
   display: flex;
   align-items: center;
-  justify-content: flex-start; /* Aligns content to the left */
+  justify-content: flex-start;
   color: white;
   overflow: hidden;
 }

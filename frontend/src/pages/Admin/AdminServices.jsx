@@ -1,14 +1,21 @@
 import { useState } from "react";
 import axios from "axios";
-import toast, { Toaster } from "react-hot-toast"; 
+import toast, { Toaster } from "react-hot-toast";
 import "./AdminServices.css";
 
+const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
-  const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5000";
 function AdminServices() {
-  // Initial state includes the category field
-  const [form, setForm] = useState({ title: "", description: "", category: "" });
+
+  const [form, setForm] = useState({
+    title: "",
+    description: "",
+    category: "",
+    summary: ""
+  });
+
   const [image, setImage] = useState(null);
+  const [submitting, setSubmitting] = useState(false);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -16,96 +23,130 @@ function AdminServices() {
 
   const addService = async (e) => {
     e.preventDefault();
-    
-    if (!image) return toast.error("Please upload an image.");
-    
-    // Validation to ensure a category is selected before submission
-    if (!form.category) return toast.error("Please select a category.");
 
-    const formData = new FormData();
-    formData.append("title", form.title);
-    formData.append("description", form.description);
-    formData.append("category", form.category); // Appends category to the multipart request
-    formData.append("image", image); 
+    if (submitting) return; // prevent double submit
+
+    if (!image) {
+      return toast.error("Please upload an image.");
+    }
+
+    if (!form.category) {
+      return toast.error("Please select a category.");
+    }
 
     try {
+      setSubmitting(true);
+
+      const formData = new FormData();
+      formData.append("title", form.title);
+      formData.append("description", form.description);
+      formData.append("summary", form.summary);
+      formData.append("category", form.category);
+      formData.append("image", image);
+
       const token = localStorage.getItem("token");
-      
+
       await axios.post(`${API_BASE}/api/services`, formData, {
-        headers: { 
+        headers: {
           Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data" 
+          "Content-Type": "multipart/form-data"
         }
       });
-      
+
       toast.success(`Success! "${form.title}" has been added.`);
-      
-      // Resets the form state after a successful upload
-      setForm({ title: "", description: "", category: "" });
+
+      setForm({
+        title: "",
+        description: "",
+        category: "",
+        summary: ""
+      });
+
       setImage(null);
-      e.target.reset(); 
+      e.target.reset();
+
     } catch (err) {
       const errorMsg = err.response?.data?.message || "Server Error";
       toast.error(errorMsg);
       console.error("Detailed Error:", err);
+    } finally {
+      setSubmitting(false);
     }
   };
 
   return (
     <div className="admin-services-container">
       <Toaster position="top-right" reverseOrder={false} />
-      
+
       <h2>Add New Service</h2>
+
       <form className="service-form" onSubmit={addService}>
+
         <div className="form-group">
           <label>Service Title</label>
-          <input 
-            name="title" 
-            value={form.title} 
-            onChange={handleChange} 
-            required 
+          <input
+            name="title"
+            value={form.title}
+            onChange={handleChange}
+            required
           />
         </div>
 
         <div className="form-group">
           <label>Category</label>
-          <select 
-            name="category" 
-            value={form.category} 
-            onChange={handleChange} 
+          <select
+            name="category"
+            value={form.category}
+            onChange={handleChange}
             required
             className="category-select"
           >
             <option value="">Select a Category</option>
             <option value="Virtualization">Virtualization</option>
-            {/* Value 'StorageBackup' matches the URL slug in your Navbar */}
             <option value="StorageBackup">Storage & Backup</option>
+            <option value="DevOps">DevOps</option>
+            <option value="Office365">Office 365</option>
           </select>
         </div>
 
         <div className="form-group">
           <label>Description</label>
-          <textarea 
-            name="description" 
-            value={form.description} 
-            onChange={handleChange} 
-            required 
+          <textarea
+            name="description"
+            value={form.description}
+            onChange={handleChange}
+            required
+          />
+        </div>
+
+        <div className="form-group">
+          <label>Summary</label>
+          <textarea
+            name="summary"
+            value={form.summary}
+            onChange={handleChange}
+            placeholder="Short summary for hover preview"
           />
         </div>
 
         <div className="form-group">
           <label>Upload Image</label>
-          <input 
-            type="file" 
-            accept="image/*" 
-            onChange={(e) => setImage(e.target.files[0])} 
-            required 
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => setImage(e.target.files[0])}
+            required
           />
         </div>
 
-        <button type="submit" className="add-service-btn">
-          Upload & Add Service
+        <button
+          type="submit"
+          className="add-service-btn"
+          disabled={submitting}
+        >
+          {submitting ? "Uploading..." : "Upload & Add Service"}
         </button>
+
       </form>
     </div>
   );

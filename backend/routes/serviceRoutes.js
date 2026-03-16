@@ -11,11 +11,12 @@ router.post("/", upload.single("image"), async (req, res) => {
 
     console.log("FILE DATA:", req.file);
 
-    const { title, description, category } = req.body;
+    const { title, description, category ,summary} = req.body;
 
     const newService = new Service({
       title: title,
       description: description,
+      summary:summary,
       category: category,
       // req.file.path is now the permanent Cloudinary HTTPS URL
       image: req.file.path,

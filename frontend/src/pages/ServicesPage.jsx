@@ -64,29 +64,31 @@ function ServicesPage() {
               <div
                 key={service._id}
                 className="service-card"
-                onClick={() =>
-                  navigate(`/detailed-services/${slug}`)
-                }
                 style={{ cursor: "pointer" }}
               >
                 <div className="card-image-container">
                   <img
-                    src={
-                      buildUrl(BASE, service.image) ||
-                      "/sample.png"
-                    }
+                    src={buildUrl(BASE, service.image) || "/sample.png"}
                     alt={service.title}
                     onError={(e) => {
                       e.target.onerror = null;
                       e.target.src = "/sample.png";
                     }}
                   />
+
+                    {/* HOVER SUMMARY OVERLAY */}
+                 <div className="card-hover-summary">
+                  <h3>{service.title}</h3>
+                  <p>{service.summary?.trim() ? service.summary : service.description}</p>
+                </div>
                 </div>
 
                 <div className="card-content">
                   <h3>{service.title}</h3>
                   <p>{service.description}</p>
                 </div>
+
+                
               </div>
             );
           })

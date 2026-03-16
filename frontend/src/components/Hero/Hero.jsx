@@ -16,7 +16,16 @@ function Hero() {
   };
 
   return (
-    <section id="home" className="hero">
+    <section
+      id="home"
+      className="hero"
+      style={{
+        backgroundImage: `url('/hero-bg.png')`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat"
+      }}
+    >
       <div className="hero-overlay">
         <div className="hero-content">
           <h1>We Don’t Just Manage IT. <br /> We Engineer Resilience.</h1>
@@ -28,16 +37,16 @@ function Hero() {
           </p>
 
           <div className="hero-buttons">
-            <button 
-              className="btn btn-primary" 
+            <button
+              className="btn btn-primary"
               onClick={() => scrollToSection("contact")}
             >
               Get a Infrastructure Health Check
             </button>
 
-            <button 
-              className="btn btn-outline" 
-              onClick={() => scrollToSection("tech")}
+            <button
+              className="btn btn-outline"
+              onClick={() => scrollToSection("techstack")}
             >
               Our Tech Stack
             </button>

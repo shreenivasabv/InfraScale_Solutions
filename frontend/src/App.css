@@ -1,44 +1,86 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+/* ---------------- GLOBAL ROOT ---------------- */
+
+:root {
+  --bg-gradient: linear-gradient(120deg,#0b1120 70%,#1e293b 100%);
+  --text-color: #e2e8f0;
+  --card-bg: rgba(30,41,59,0.7);
+  --card-shadow: rgba(30,41,59,0.12);
+  --heading-color: #38bdf8;
+  --button-grad1: #38bdf8;
+  --button-grad2: #0ea5e9;
+  --border-color: rgba(255,255,255,0.08);
 }
 
-/* Professional App-wide Styles */
+/* ---------------- LIGHT THEME ---------------- */
+
+[data-theme="light"] {
+  --bg-gradient: linear-gradient(120deg,#f8fafc 70%,#e2e8f0 100%);
+  --text-color: #111827;
+  --card-bg: rgba(255,255,255,0.85);
+  --card-shadow: rgba(0,0,0,0.08);
+  --heading-color: #0284c7;
+  --button-grad1: #0ea5e9;
+  --button-grad2: #0284c7;
+  --border-color: rgba(0,0,0,0.08);
+}
+
+/* ---------------- BODY ---------------- */
 
 body {
-  background: linear-gradient(120deg, #0b1120 70%, #1e293b 100%);
-  color: #e2e8f0;
+  margin: 0;
+  padding: 0;
+  background: var(--bg-gradient);
+  color: var(--text-color);
+  font-family: "Segoe UI", Roboto, sans-serif;
+  transition: background 0.3s ease, color 0.3s ease;
 }
+
+/* ---------------- ROOT CONTAINER ---------------- */
 
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  width: 100%;
+  margin: 0;
+  padding: 0;
 }
+/* ---------------- SECTIONS / CARDS ---------------- */
 
-section, .card, .page-content {
+section,
+.card,
+.page-content {
   border-radius: 16px;
-  background: rgba(30,41,59,0.7);
-  box-shadow: 0 2px 16px rgba(30,41,59,0.12);
+  background: var(--card-bg);
+  box-shadow: 0 2px 16px var(--card-shadow);
   margin-bottom: 32px;
   padding: 32px 24px;
+
   opacity: 0;
   transform: translateY(40px);
   animation: revealFadeIn 1.2s forwards;
   animation-delay: 0.2s;
+
+  transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
-h1, h2, h3, h4 {
-  color: #38bdf8;
+/* ---------------- HEADINGS ---------------- */
+
+h1,
+h2,
+h3,
+h4 {
+  color: var(--heading-color);
   font-weight: 700;
   letter-spacing: 0.02em;
 }
 
-button, .btn {
-  background: linear-gradient(90deg, #38bdf8 60%, #0ea5e9 100%);
+/* ---------------- BUTTONS ---------------- */
+
+button,
+.btn {
+  background: linear-gradient(
+    90deg,
+    var(--button-grad1) 60%,
+    var(--button-grad2) 100%
+  );
   color: #fff;
   border: none;
   border-radius: 8px;
@@ -46,13 +88,22 @@ button, .btn {
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(30,41,59,0.15);
-  transition: background 0.3s, box-shadow 0.3s;
+
+  box-shadow: 0 2px 8px var(--card-shadow);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
 }
-button:hover, .btn:hover {
-  background: linear-gradient(90deg, #0ea5e9 60%, #38bdf8 100%);
-  box-shadow: 0 4px 16px rgba(30,41,59,0.25);
+
+button:hover,
+.btn:hover {
+  background: linear-gradient(
+    90deg,
+    var(--button-grad2) 60%,
+    var(--button-grad1) 100%
+  );
+  box-shadow: 0 4px 16px var(--card-shadow);
 }
+
+/* ---------------- ANIMATION ---------------- */
 
 @keyframes revealFadeIn {
   to {
@@ -61,12 +112,16 @@ button:hover, .btn:hover {
   }
 }
 
-/* Responsive */
+/* ---------------- RESPONSIVE ---------------- */
+
 @media (max-width: 768px) {
-  section, .card, .page-content {
+  section,
+  .card,
+  .page-content {
     padding: 16px 8px;
     margin-bottom: 16px;
   }
+
   h1 {
     font-size: 2rem;
   }

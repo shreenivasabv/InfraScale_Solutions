@@ -47,6 +47,7 @@
   height: 200px;
   overflow: hidden;
   background-color: #000;
+  position: relative;   /* IMPORTANT */
 }
 
 .card-image-container img {
@@ -76,4 +77,36 @@
   color: #94a3b8;
   font-size: 1.2rem;
   margin-top: 50px;
+}
+
+/* SUMMARY OVERLAY */
+
+.card-hover-summary {
+  position: absolute;
+  inset: 0;
+  background: rgba(11, 17, 32, 0.92);
+  color: white;
+  padding: 20px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.card-image-container:hover .card-hover-summary {
+  opacity: 1;
+}
+
+.card-hover-summary h3 {
+  color: #38bdf8;
+  margin-bottom: 10px;
+}
+
+.card-hover-summary p {
+  font-size: 14px;
+  color: #d1d5db;
 }

@@ -11,6 +11,7 @@ const serviceSchema = new mongoose.Schema({
     // These MUST match the values in your Admin dropdown exactly
     enum: ['Virtualization', 'StorageBackup', 'DevOps','Office365',] 
   },
+  summary: { type: String },
   createdAt: { type: Date, default: Date.now }
 });
 

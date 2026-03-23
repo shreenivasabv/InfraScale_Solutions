@@ -2,7 +2,7 @@ import "./Footer.css";
 
 function Footer() {
   return (
-    <footer className="footer">
+    <footer className="footer" id="footer">
       <p>© 2026 INFRASCALE Solutions. All Rights Reserved.</p>
     </footer>
   );

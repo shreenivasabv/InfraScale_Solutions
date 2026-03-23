@@ -2,7 +2,7 @@ import "./Insight.css";
 
 function Insight() {
   return (
-    <section className="insight">
+    <section className="insight" id="insight">
       <h2>The Infrascale Insight Report</h2>
 
       <p className="insight-sub">

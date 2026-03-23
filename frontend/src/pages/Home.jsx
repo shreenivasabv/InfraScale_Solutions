@@ -9,22 +9,24 @@ import Contact from "../components/Contact/Contact";
 import Footer from "../components/Footer/Footer";
 import { Toaster } from 'react-hot-toast';
 import OurPartners from "../components/OurPartners/OurPartners";
+import SubNavbar from "../components/SubNavbar/SubNavbar";
 
 function Home() {
   return (
-    <>
+    <div className="home-container">
       <Toaster />
-      <Hero />
-      <Difference />
+      <Hero  />
+      <SubNavbar />
+      <Difference  />
       <ProblemSolution />
       <Domains />
-      <Process />
-      <TechStack />
+      <Process  />
+      <TechStack/>
       <Insight />
       <OurPartners />
-      <Contact />
-      <Footer />
-    </>
+        <Contact/>
+        <Footer />
+    </div>
   );
 }
 

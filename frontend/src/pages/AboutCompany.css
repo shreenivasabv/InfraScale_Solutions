@@ -44,3 +44,38 @@
   margin-top: 60px;
   text-align: center;
 }
+.card {
+  background: #131c2f;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+.about-section {
+  max-width: 900px;
+  margin: auto;
+  text-align: center;
+  line-height: 1.8;
+}
+
+.values {
+  margin-top: 60px;
+  display: flex;
+  justify-content: center;
+}
+
+.values .card {
+  max-width: 600px;
+  width: 100%;
+}
+.values ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 20px;
+}
+
+.values li {
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+}

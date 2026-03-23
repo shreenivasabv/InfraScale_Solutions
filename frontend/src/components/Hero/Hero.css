@@ -7,7 +7,7 @@
   align-items: center;
   justify-content: flex-start;
   color: white;
-  overflow: hidden;
+  overflow: visible;
 }
 
 /* 2. Dark Overlay - Key for the "Infrascale" look */

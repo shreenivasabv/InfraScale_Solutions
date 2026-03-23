@@ -2,7 +2,7 @@ import "./Domains.css";
 
 function Domains() {
   return (
-    <section className="domains">
+    <section className="domains" id="domains">
       <h2>OUR SPECIALIZED DOMAINS</h2>
 
       <div className="domain">

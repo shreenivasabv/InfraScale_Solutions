@@ -4,15 +4,15 @@ function AboutCompany() {
   return (
     <div className="about-wrapper">
 
-      <section className="about-section">
-        <h2>Who We Are</h2>
-        <p>
-          InfraScale is an enterprise-focused IT solutions provider specializing in 
-          virtualization, cloud architecture, storage, backup, disaster recovery, 
-          and DevOps transformation. We design secure, scalable, and high-performance 
-          infrastructure solutions tailored for modern businesses.
-        </p>
-      </section>
+      <section className="about-section card">
+              <h2>About InfraScale</h2>
+              <p>
+                InfraScale is an enterprise-focused IT solutions provider specializing in 
+                virtualization, cloud architecture, storage, backup, disaster recovery, 
+                and DevOps transformation. We design secure, scalable, and high-performance 
+                infrastructure solutions tailored for modern businesses.
+              </p>
+        </section>
 
       <section className="mission-vision">
         <div>
@@ -32,16 +32,18 @@ function AboutCompany() {
         </div>
       </section>
 
-      <section className="values">
-        <h3>Our Core Values</h3>
-        <ul>
-          <li>Technical Excellence</li>
-          <li>Integrity & Transparency</li>
-          <li>Customer-Centric Approach</li>
-          <li>Innovation & Continuous Improvement</li>
-          <li>Security & Reliability First</li>
-        </ul>
-      </section>
+            <section className="values">
+                  <div className="card">
+                    <h3>Our Core Values</h3>
+                    <ul>
+                      <li>Technical Excellence</li>
+                      <li>Integrity & Transparency</li>
+                      <li>Customer-Centric Approach</li>
+                      <li>Innovation & Continuous Improvement</li>
+                      <li>Security & Reliability First</li>
+                    </ul>
+                  </div>
+            </section>
 
     </div>
   );

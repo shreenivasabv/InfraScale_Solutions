@@ -1,0 +1,48 @@
+.subnav {
+  position: sticky;
+  top: 70px; /* adjust to your navbar height */
+  background: #0b1c2c;
+  padding: 14px 0;
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+  z-index: 1000;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Links */
+.subnav a {
+  text-decoration: none;
+  color: #cbd5e1;
+  font-size: 15px;
+  font-weight: 500;
+  position: relative;
+  transition: 0.3s;
+}
+
+/* Hover */
+.subnav a:hover {
+  color: #38bdf8;
+}
+
+/* Active */
+.subnav a.active {
+  color: #38bdf8;
+}
+
+/* Underline */
+.subnav a::after {
+  content: "";
+  position: absolute;
+  width: 0%;
+  height: 2px;
+  background: #38bdf8;
+  left: 0;
+  bottom: -6px;
+  transition: 0.3s;
+}
+
+.subnav a:hover::after,
+.subnav a.active::after {
+  width: 100%;
+}

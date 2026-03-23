@@ -2,7 +2,7 @@ import "./Difference.css";
 
 function Difference() {
   return (
-    <section className="difference">
+    <section className="difference" id="difference">
       <h2>THE INFRASCALE DIFFERENCE</h2>
 
       <div className="difference-grid">

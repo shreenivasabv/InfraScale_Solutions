@@ -20,6 +20,7 @@ import AdminTeam from "./pages/Admin/AdminTeam";
 import AdminServices from "./pages/Admin/AdminServices";
 import AdminAbout from "./pages/Admin/AdminAbout";
 import ManagePartners from "./pages/Admin/ManagePartners";
+import OurPartners from "./components/OurPartners/OurPartners";
 
 /* PROTECTED ROUTE */
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -51,6 +52,7 @@ function AppContent() {
         <Route path="/services/:categoryName" element={<ServicesPage />} />
 
         <Route path="/team" element={<Team />} />
+        <Route path="/partners" element={<OurPartners />} />
 
         {/* ---------- ADMIN LOGIN ---------- */}
 

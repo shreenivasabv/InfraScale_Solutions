@@ -8,8 +8,12 @@ const bcrypt = require("bcryptjs");
 
 // Models
 const Admin = require("./models/Admin");
-
 const app = express();
+
+
+app.get("/health", (req, res) => {
+  res.status(200).send("OK");
+});
 
 // --- MIDDLEWARE ---
 const allowedOrigins = [

@@ -43,7 +43,7 @@ const OurPartners = () => {
   const gridSlots = Array(10).fill(null);
 
   return (
-    <section className="our-partners-section" ref={sectionRef}>
+    <section className="our-partners-section" ref={sectionRef} id='partners'>
       <div className="partners-header-container">
         <h2 className="partners-main-heading">Our Certificates</h2>
         <div className="accent-line"></div>

@@ -1,48 +1,100 @@
 .subnav {
-  position: sticky;
-  top: 70px; /* adjust to your navbar height */
-  background: #0b1c2c;
-  padding: 14px 0;
+  position: fixed;
+  top: 70px;
+  left: 0;
+  width: 100%;
+
+  background: rgba(11, 28, 44, 0.95);
+  backdrop-filter: blur(10px);
+
+  padding: 10px 30px;
+
   display: flex;
-  justify-content: center;
-  gap: 50px;
-  z-index: 1000;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  flex-direction: column;   /* 🔥 IMPORTANT */
+  align-items: center;
+
+  z-index: 999;
+
+  opacity: 0;
+  transform: translateY(-20px);
+  pointer-events: none;
+
+  transition: all 0.3s ease;
+}
+.subnav.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
 }
 
-/* Links */
-.subnav a {
+/* 🔥 TITLE */
+.subnav-title {
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+/* 🔥 LINKS CENTER */
+.subnav-links {
+  display: flex;
+  gap: 40px;
+}
+
+.subnav-links a {
   text-decoration: none;
   color: #cbd5e1;
-  font-size: 15px;
-  font-weight: 500;
-  position: relative;
+  font-size: 14px;
   transition: 0.3s;
 }
 
-/* Hover */
-.subnav a:hover {
+.subnav-links a:hover,
+.subnav-links a.active {
   color: #38bdf8;
 }
 
-/* Active */
-.subnav a.active {
-  color: #38bdf8;
-}
-
-/* Underline */
-.subnav a::after {
-  content: "";
-  position: absolute;
-  width: 0%;
-  height: 2px;
+/* 🔥 SCROLL TOP BUTTON */
+.scroll-top-btn {
   background: #38bdf8;
-  left: 0;
-  bottom: -6px;
+  border: none;
+  color: #fff;
+  padding: 8px 10px;
+  border-radius: 50%;
+  cursor: pointer;
   transition: 0.3s;
 }
 
-.subnav a:hover::after,
-.subnav a.active::after {
+.scroll-top-btn:hover {
+  background: #0ea5e9;
+  transform: scale(1.1);
+}
+.subnav-title {
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 20px;   /* 🔥 bigger */
+  margin-bottom: 8px;
+  text-align: center;
+}
+.subnav-row {
   width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.scroll-top-btn {
+  position: absolute;
+  right: 20px;
+
+  background: #38bdf8;
+  border: none;
+  color: #fff;
+  padding: 8px 10px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.scroll-top-btn:hover {
+  background: #0ea5e9;
+  transform: scale(1.1);
 }

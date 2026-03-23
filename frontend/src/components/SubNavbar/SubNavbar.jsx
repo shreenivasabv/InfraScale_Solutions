@@ -1,17 +1,23 @@
 import { useEffect, useState } from "react";
+import { FaArrowUp } from "react-icons/fa";
 import "./SubNavbar.css";
 
 function SubNavbar() {
   const [active, setActive] = useState("");
+  const [show, setShow] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
+      const scrollY = window.scrollY;
+
+      setShow(scrollY > 300);
+
       const sections = document.querySelectorAll("section");
       let current = "";
 
       sections.forEach((section) => {
         const sectionTop = section.offsetTop;
-        if (window.scrollY >= sectionTop - 120) {
+        if (scrollY >= sectionTop - 120) {
           current = section.getAttribute("id");
         }
       });
@@ -23,26 +29,44 @@ function SubNavbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  return (
-    <div className="subnav">
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
-    <div className="subnav-header">
-      <h1>What We have in this Page</h1>
-    </div>        
-     
+  return (
+    <div className={`subnav ${show ? "visible" : ""}`}>
+  
+  {/* 🔥 TITLE TOP CENTER */}
+  <div className="subnav-title">
+    What We have in this Page
+  </div>
+
+  {/* 🔥 ROW */}
+  <div className="subnav-row">
+
+    {/* LINKS CENTER */}
+    <div className="subnav-links">
       <a href="#domains" className={active === "domains" ? "active" : ""}>
         Domains
       </a>
-      <a href="#tech" className={active === "tech" ? "active" : ""}>
+      <a href="#techstack" className={active === "tech" ? "active" : ""}>
         Tech Stack
       </a>
       <a href="#partners" className={active === "partners" ? "active" : ""}>
-        Partners
+        Our Certifications
       </a>
       <a href="#contact" className={active === "contact" ? "active" : ""}>
         Contact
       </a>
     </div>
+
+    {/* ARROW RIGHT */}
+    <button className="scroll-top-btn" onClick={scrollToTop}>
+      <FaArrowUp />
+    </button>
+
+  </div>
+</div>
   );
 }
 

@@ -59,7 +59,7 @@ function Navbar() {
           {openMenu === "about" && (
             <ul className="dropdown-menu">
               <li><Link to="/about/company">Company</Link></li>
-              <li><Link to="/partners">Certificates</Link></li>
+              <li><Link to="/partners">Our Certifications</Link></li>
             </ul>
           )}
         </li>

@@ -8,12 +8,12 @@ function TechStack() {
       <div className="tech-grid">
         <div>
           <h3>Virtualization</h3>
-          <p>Nutanix / VMware / Hyper-V / Proxmox</p>
+          <p>Nutanix / VMware / Hyper-V</p>
         </div>
 
         <div>
           <h3>Storage</h3>
-          <p>HPE / Dell / Lenovo / StoreOnce / TrueNAS</p>
+          <p>HPE / Dell / Lenovo / StoreOnce</p>
         </div>
 
         <div>
@@ -23,7 +23,7 @@ function TechStack() {
 
         <div>
           <h3>OS & Apps</h3>
-          <p>Linux / Docker / AD / Microsoft 365 / Shell</p>
+          <p>Linux/ AD / Microsoft 365</p>
         </div>
       </div>
     </section>

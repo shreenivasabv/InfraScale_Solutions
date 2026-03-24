@@ -8,8 +8,8 @@ function AboutCompany() {
               <h2>About InfraScale</h2>
               <p>
                 InfraScale is an enterprise-focused IT solutions provider specializing in 
-                virtualization, cloud architecture, storage, backup, disaster recovery, 
-                and DevOps transformation. We design secure, scalable, and high-performance 
+                virtualization,storage, backup, disaster recovery.
+                 We design secure, scalable, and high-performance 
                 infrastructure solutions tailored for modern businesses.
               </p>
         </section>
